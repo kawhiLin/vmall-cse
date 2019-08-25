@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="include/common">
+
+<body>
+<div th:fragment="content" th:remove="tag">
+    <!-- 中间内容 -->
+    <div class="container">
+        <div class="row margin-t">
+            <div class="form-horizontal">
+                <div class="col-md-2 col-sm-2"></div>
+                <div class="form-group form-group-lg col-sm-6 col-md-6">
+                    <input type="text" class="form-control" id="newSearchKeyWord" placeholder="Mate20" th:value="${session.searchKeyWord}"/>
+                </div>
+                <button class="btn btn-primary btn-lg col-sm-2 col-md-2 big-button" onclick="searchPre()">查找商品</button>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div id="searchResultArea">
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var searchKeyWord = /*[[${session.searchKeyWord}]]*/ 'xxx';
+        console.log("searchKeyWord=" + searchKeyWord);
+
+        searchInit();
+
+        function searchInit() {
+
+            if (searchKeyWord != "" && searchKeyWord != undefined && searchKeyWord != null) {
+                updateList(searchKeyWord);
+            }
+        }
+
+        function searchPre() {
+            var searchKeyWord = document.getElementById("newSearchKeyWord").value;
+            updateList(searchKeyWord);
+        }
+
+        function search(searchKeyWord) {
+            var search = {};
+            search.searchKeyWord = searchKeyWord;
+            var searchResult = "";
+            $.ajax({
+                async: false,
+                type: 'POST',
+                url: '/searchProduct',
+                data: search,
+                dataType: 'json',
+                success: function (result) {
+                    searchResult = result.result;
+                },
+                error: function () {
+                    layer.alert('查询错误');
+                }
+            });
+            searchResult = eval("(" + searchResult + ")");
+            return searchResult;
+        }
+
+        function updateList(searchKeyWord) {
+            var searchResultArea = document.getElementById("searchResultArea");
+            var searchResult = search(searchKeyWord);
+            var html = "";
+            searchResultArea.innerHTML = "";
+            for (var i = 0; i < searchResult.length; i++) {
+                var imgURL = "/img/" + searchResult[i].id + ".png";
+                html += '<div class="col-sm-3 col-md-3 search-padding">' +
+                    '<div class="boxes pointer" onclick="productDetail(' + searchResult[i].id + ')">' +
+                    '<div class="big bigimg">' +
+                    '<img src="' + imgURL + '"/>' +
+                    '</div>' +
+                    '<p class="product-name">' + searchResult[i].name + '</p>' +
+                    '<p class="product-price">¥' + searchResult[i].price + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-sm-1 col-md-1"></div>';
+            }
+            searchResultArea.innerHTML += html;
+        }
+
+        function productDetail(id) {
+            var currentUser = /*[[${session.currentUser}]]*/ '';
+            if (currentUser == null || currentUser == undefined || currentUser == "") {
+                alert('请先登录');
+                window.location.href = "/login";
+                return;
+            }
+
+            var product = {};
+            var jumpResult = '';
+            product.productId = id;
+            $.ajax({
+                async: false, //设置同步
+                type: 'POST',
+                url: '/productDetail',
+                data: product,
+                dataType: 'json',
+                success: function (result) {
+                    jumpResult = result.result;
+                },
+                error: function () {
+                    layer.alert('查询错误');
+                }
+            });
+
+            if (jumpResult == "success") {
+                window.location.href = "/product_detail";
+            }
+        }
+
+        /*]]>*/
+    </script>
+
+</div>
+</body>
+
+
+</html>
