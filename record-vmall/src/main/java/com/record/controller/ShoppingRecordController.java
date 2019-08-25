@@ -35,8 +35,8 @@ import java.util.List;
 import java.util.Map;
 
 
-@RestSchema(schemaId = "record")
-@RequestMapping(path = "/record", produces = MediaType.APPLICATION_JSON)
+@RestSchema(schemaId = "order")
+@RequestMapping(path = "/order", produces = MediaType.APPLICATION_JSON)
 @EnableAutoConfiguration
 public class ShoppingRecordController {
 
@@ -51,11 +51,11 @@ public class ShoppingRecordController {
 	public static String evaluationUrl;
 
     public ShoppingRecordController() {
-		this.userUrl = "cse://user-vmall/user";
-		this.productUrl = "cse://product-vmall/product";
-		this.shoppingcarUrl = "cse://shoppingcar-vmall/shoppingcar";
-		this.recordUrl = "cse://record-vmall/record";
-		this.evaluationUrl = "cse://evaluation-vmall/evaluation";
+		this.userUrl = "cse://user/user";
+		this.productUrl = "cse://product/product";
+		this.shoppingcarUrl = "cse://shoppingcar/shoppingcar";
+		this.recordUrl = "cse://order/order";
+		this.evaluationUrl = "cse://evaluation/evaluation";
 		System.out.println("url初始化：\n" + userUrl + "\n" + productUrl + "\n" + shoppingcarUrl + "\n" + recordUrl + "\n"+ evaluationUrl);
 	}
 

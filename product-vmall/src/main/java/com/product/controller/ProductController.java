@@ -41,11 +41,11 @@ public class ProductController extends HttpServlet {
     public static String evaluationUrl;
 
     public ProductController() {
-        this.userUrl = "cse://user-vmall/user";
-        this.productUrl = "cse://product-vmall/product";
-        this.shoppingcarUrl = "cse://shoppingcar-vmall/shoppingcar";
-        this.recordUrl = "cse://record-vmall/record";
-        this.evaluationUrl = "cse://evaluation-vmall/evaluation";
+        this.userUrl = "cse://user/user";
+        this.productUrl = "cse://productl/product";
+        this.shoppingcarUrl = "cse://shoppingca/shoppingcar";
+        this.recordUrl = "cse://order/order";
+        this.evaluationUrl = "cse://evaluation/evaluation";
         System.out.println("url初始化：\n" + userUrl + "\n" + productUrl + "\n" + shoppingcarUrl + "\n" + recordUrl + "\n"+ evaluationUrl);
     }
     

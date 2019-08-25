@@ -26,11 +26,11 @@ public class UserController {
     public static String evaluationUrl;
 
     public UserController() {
-        this.userUrl = "cse://user-vmall/user";
-        this.productUrl = "cse://product-vmall/product";
-        this.shoppingcarUrl = "cse://shoppingcar-vmall/shoppingcar";
-        this.recordUrl = "cse://record-vmall/record";
-        this.evaluationUrl = "cse://evaluation-vmall/evaluation";
+        this.userUrl = "cse://use/user";
+        this.productUrl = "cse://product/product";
+        this.shoppingcarUrl = "cse://shoppingcar/shoppingcar";
+        this.recordUrl = "cse://order/order";
+        this.evaluationUrl = "cse://evaluation/evaluation";
         System.out.println("url初始化：\n" + userUrl + "\n" + productUrl + "\n" + shoppingcarUrl + "\n" + recordUrl + "\n"+ evaluationUrl);
     }
 
