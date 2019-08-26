@@ -29,6 +29,7 @@
         <module>user-vmall</module>
         <module>product-vmall</module>
         <module>shoppingcar-vmall</module>
+        <module>shoppingcar2-vmall</module>
         <module>record-vmall</module>
         <module>evaluation-vmall</module>
     </modules>
