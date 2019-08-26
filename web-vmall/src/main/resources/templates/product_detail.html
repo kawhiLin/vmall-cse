@@ -94,6 +94,7 @@
             shoppingCar.productId = productId;
             shoppingCar.counts = counts;
             var addResult = "";
+            var carVersion = "";
             $.ajax({
                 async : false,
                 type : 'POST',
@@ -102,19 +103,33 @@
                 dataType : 'json',
                 success : function(result) {
                     addResult = result.result;
+                    //购物车版本
+                    carVersion = result.version;
                 },
                 error : function(result) {
                     layer.alert('查询用户错误');
                 }
             });
             if(addResult == "success") {
-                layer.confirm('前往购物车？', {icon: 1, title:'添加成功',btn:['前往购物车','继续浏览']},
-                    function(){
-                        window.location.href = "/shopping_car";
-                    },
-                    function(index){
-                        layer.close(index);}
-                );
+                //针对result.version（来自shoppingcar后端返回），页面显示不同购物车版本
+                if (carVersion == "1.0"){
+                    layer.confirm('前往购物车？', {icon: 1, title:'购物车V1.0   添加成功',btn:['前往购物车','继续浏览']},
+                        function(){
+                            window.location.href = "/shopping_car";
+                        },
+                        function(index){
+                            layer.close(index);}
+                    );
+                } else{
+                    layer.confirm('前往购物车？', {icon: 1, title:'购物车V2.0   添加成功',btn:['前往购物车','继续浏览']},
+                        function(){
+                            window.location.href = "/shopping_car";
+                        },
+                        function(index){
+                            layer.close(index);}
+                    );
+                }
+
             }
         }
 

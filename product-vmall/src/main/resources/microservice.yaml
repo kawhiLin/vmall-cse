@@ -2,7 +2,7 @@ APPLICATION_ID: VMALL
 service_description:
   # environment: development  # 声明是开发环境，避免schema修改之后需要改版本
   name: product
-  version: 0.0.1
+  version: 1.0.0
   properties:
     allowCrossApp: false
 cse:

@@ -98,6 +98,9 @@ public class ShoppingCarController {
         }
         Map<String, Object> resultMap = new HashMap<String,Object>();
         resultMap.put("result","success");
+        // for页面显示不同版本的购物车，增加version字段
+        resultMap.put("version","1.0");
+        // resultMap.put("version","2.0");
         System.out.println("我返回了");
         return JSONObject.toJSONString(resultMap);
     }
