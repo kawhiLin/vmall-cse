@@ -1,8 +1,13 @@
 package com.web.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.web.entity.User;
 import com.web.utils.InitDB;
+import com.web.utils.RedisService;
+import io.vertx.core.json.JsonObject;
 import org.apache.servicecomb.provider.rest.common.RestSchema;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +28,24 @@ public class PagesController {
     public static String recordUrl;
     public static String evaluationUrl;
 
+    @Autowired
+    private RedisService redisService ;
+
+    private void sessionCheck(HttpSession  httpSession){
+        //校验Session是否存在
+        String sessionID = httpSession.getId();
+        if(redisService.exists(sessionID)){
+            JSONObject userJsonString = (JSONObject)redisService.get(sessionID);
+            User user = JSONObject.toJavaObject(userJsonString, User.class);
+            httpSession.setAttribute("currentUser",user);
+            System.out.println("[INFO] Session existed！"+sessionID);
+        }else{
+            System.out.println("[INFO] Session is null");
+        }
+
+
+    }
+
     public PagesController() {
         InitDB.connmysql();
         System.out.println("数据库初始化");
@@ -33,9 +56,10 @@ public class PagesController {
         this.evaluationUrl = "cse://evaluation/evaluation";
         System.out.println("url初始化：\n" + userUrl + "\n" + productUrl + "\n" + shoppingcarUrl + "\n" + recordUrl + "\n"+ evaluationUrl);
     }
-
+    // 临时策略：当请求发送到新的web实例时，检查redis中是否存有该sessionID，有则将userinfo置入到httpsession中
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    String index() {
+    String index(HttpSession httpSession) {
+        sessionCheck(httpSession);
         return "main";
     }
 
@@ -51,30 +75,34 @@ public class PagesController {
     }
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
-    String main() {
+    String main(HttpSession httpSession) {
+        sessionCheck(httpSession);
         return "main";
     }
 
     @RequestMapping(value = "/control", method = RequestMethod.GET)
-    String control() {
+    String control(HttpSession httpSession) {
+        sessionCheck(httpSession);
         return "control";
     }
 
     @RequestMapping(value = "/amend_info", method = RequestMethod.GET)
-    String amend_info() {
+    String amend_info(HttpSession httpSession) {
+        sessionCheck(httpSession);
         return "amend_info";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(String searchKeyWord, HttpSession httpSession) {
-
+        sessionCheck(httpSession);
         httpSession.setAttribute("searchKeyWord",searchKeyWord);
         System.out.println("searchKeyWord="+ searchKeyWord);
         return "search";
     }
 
     @RequestMapping(value = "/product_detail", method = RequestMethod.GET)
-    String product_detail() {
+    String product_detail(HttpSession httpSession) {
+        sessionCheck(httpSession);
         return "product_detail";
     }
 
@@ -85,19 +113,19 @@ public class PagesController {
 
 
     @RequestMapping(value = "/shopping_car", method = RequestMethod.GET)
-    String shopping_car() {
-
+    String shopping_car(HttpSession httpSession) {
+        sessionCheck(httpSession);
         return "shopping_car";
     }
 
     @RequestMapping(value = "/shopping_handle", method = RequestMethod.GET)
-    String shopping_handle() {
-
+    String shopping_handle(HttpSession httpSession) {
+        sessionCheck(httpSession);
         return "shopping_handle";
     }
     @RequestMapping(value = "/shopping_record", method = RequestMethod.GET)
-    String shopping_record() {
-
+    String shopping_record(HttpSession httpSession) {
+        sessionCheck(httpSession);
         return "shopping_record";
     }
 

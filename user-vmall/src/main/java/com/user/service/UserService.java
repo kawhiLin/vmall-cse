@@ -28,6 +28,10 @@ public class UserService {
 
     private static RestTemplate restTemplate = RestTemplateBuilder.create();
 
+    public User getUserByName(String name){
+        return userRepository.getUserByNameOrEmail(name);
+    }
+
     public Map<String, Object> doLogin(ArgsBean argsBean) {
         Map map = (Map) JSONObject.parse(argsBean.getMapString());
         //TODO 异常处理

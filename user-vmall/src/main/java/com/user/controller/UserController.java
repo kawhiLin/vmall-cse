@@ -73,6 +73,13 @@ public class UserController {
         return JSONObject.toJSONString(userService.getUserById(argsBean));
     }
 
+    @RequestMapping(value = "/getUserByName", method = RequestMethod.POST)
+    public String getUserByName(@RequestBody String name){
+        System.out.println("我接收到了getUserByName请求");
+        return JSONObject.toJSONString(userService.getUserByName(name));
+    }
+
+
     @RequestMapping(value = "/getUserDetailById", method = RequestMethod.POST)
     public String getUserDetailById(@RequestBody ArgsBean argsBean) {
         return JSONObject.toJSONString(userService.getUserDetailById(argsBean));
