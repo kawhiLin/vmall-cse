@@ -39,6 +39,12 @@ public class PagesController {
         return "main";
     }
 
+    @RequestMapping(path = "/hello", method = RequestMethod.GET)
+    @ResponseBody
+    String hello() {
+        return "hello add order";
+    }
+
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     String login() {
         return "login";

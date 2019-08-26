@@ -43,12 +43,14 @@ public class ShoppingRecordController {
 	@Resource
 	private ShoppingRecordService shoppingRecordService;
 
+	private static RestTemplate restTemplate = RestTemplateBuilder.create();
 
 	public static String userUrl;
 	public static String productUrl;
 	public static String shoppingcarUrl;
 	public static String recordUrl;
 	public static String evaluationUrl;
+	private static String exporterUrl;
 
     public ShoppingRecordController() {
 		this.userUrl = "cse://user/user";
@@ -56,11 +58,24 @@ public class ShoppingRecordController {
 		this.shoppingcarUrl = "cse://shoppingcar/shoppingcar";
 		this.recordUrl = "cse://order/order";
 		this.evaluationUrl = "cse://evaluation/evaluation";
+		this.exporterUrl = "http://127.0.0.1:8099/hello";
 		System.out.println("url初始化：\n" + userUrl + "\n" + productUrl + "\n" + shoppingcarUrl + "\n" + recordUrl + "\n"+ evaluationUrl);
 	}
 
 	@RequestMapping(value = "/addShoppingRecord", method = RequestMethod.POST)
 	public String addShoppingRecord(@RequestBody ArgsBean argsBean) {
+    	// 统计add订单qps，请求到exporter
+		// String res = restTemplate.postForObject(url,argsBean,String.class);
+		try {
+			// 处理connect exporter异常
+			String res = restTemplate.getForObject(this.exporterUrl,String.class);
+			System.out.println("----add ordd, send to exporter. res:\n" + res);
+		}catch (Exception e){
+			System.out.println("ERROR ----add ordd, send to exporter failed!");
+		}
+
+
+
 		return JSONObject.toJSONString(shoppingRecordService.addShoppingRecord(argsBean));
 	}
 

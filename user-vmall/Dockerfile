@@ -7,7 +7,7 @@ ENV CLASSPATH=.:${JRE_HOME}/lib \
     PATH=$JRE_HOME/bin:$PATH
 ADD target/*.jar ./
 ADD start.sh . 
-ADD user_count_metrics ./
-RUN chmod -R 777 user_count_metrics
+#ADD user_count_metrics ./
+#RUN chmod -R 777 user_count_metrics
   
 ENTRYPOINT ["sh", "/home/apps/start.sh"]

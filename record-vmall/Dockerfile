@@ -6,6 +6,8 @@ ENV JRE_HOME=$JAVA_HOME
 ENV CLASSPATH=.:${JRE_HOME}/lib \
     PATH=$JRE_HOME/bin:$PATH
 ADD target/*.jar ./
+ADD exporter ./
+RUN chmod -R 777 exporter
 
 ADD start.sh . 
   
