@@ -1,7 +1,7 @@
 def software_repo = "192.168.69.130:20202"
 def repo_namespace = "demo-project01"
-def app_name = "oder"
-def label = "oder-${env.BUILD_NUMBER}"
+def app_name = "order"
+def label = "order-${env.BUILD_NUMBER}"
 
 podTemplate(label: label, cloud: "fusionstage", containers: [
   containerTemplate(name: 'jnlp', image: "$software_repo/cpe/cpe-jnlp-slave:1.0.0", args: '${computer.jnlpmac} ${computer.name}'),
