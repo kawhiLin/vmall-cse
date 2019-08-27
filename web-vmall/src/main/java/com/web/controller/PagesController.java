@@ -47,8 +47,9 @@ public class PagesController {
     }
 
     public PagesController() {
-        InitDB.connmysql();
-        System.out.println("数据库初始化");
+//        已有单独的Pod去初始化
+//        InitDB.connmysql();
+//        System.out.println("数据库初始化");
         this.userUrl = "cse://user/user";
         this.productUrl = "cse://product/product";
         this.shoppingcarUrl = "cse://shoppingcar/shoppingcar";

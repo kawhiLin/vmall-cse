@@ -1,3 +1,68 @@
-测试：
-                                                                                                                                                                                                                                                            docker启动脚本
-                                                                                                                                                                                                                                                            docker run -e AK=WGNBMKW0PXKP81BAVOCJ  -e SK=xyFOshm7UqPVAmYKJODcqwlL3INkCAj5Gf0cmLIA  -e PROJECT=FusionStageResVDC  -e CONFIGIP=10.68.0.110  -e MYSQLVMALL_SERVICE_HOST=192.168.73.229 -e MYSQLVMALL_SERVICE_PORT=32441 -p 8080:8080 -d web-vmall:cse-1.1.0
+## 说明
+
+Vmall网上商城 微服务demo
+
+### 功能
+
+支持演示以下功能：
+
+- 服务目录
+- 图形化编排
+- 微服务
+  - 注册发现
+  - 服务治理
+  - 灰度发布
+- 非侵入式调用链
+- 自定义监控
+
+- 弹性伸缩
+
+- CICD
+- 镜像构建
+
+#### TODO
+
+待加入功能：
+
+- 微服务
+  - SDK版本升级 当前2.2.1
+  - mesher接入/多语言/异构框架
+  - 支持演示各种治理策略
+
+- 模板
+
+  - 设计器 配置Java探针
+
+  
+
+## 使用
+
+### 目录介绍
+
+/deploy 部署相关材料
+
+/build 流水线相关材料
+
+/source2image 镜像构建相关材料
+
+/initDb 数据库初始化模块编排部署
+
+
+
+### 流水线
+
+
+
+### 镜像构建
+
+
+
+### 微服务
+
+
+
+### 自定义监控
+
+
+
+### 调用链
