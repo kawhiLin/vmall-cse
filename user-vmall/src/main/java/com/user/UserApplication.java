@@ -14,7 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class UserApplication {
     public static void main(String[] args) throws Exception {
 
-        Log4jUtils.init();
+//        Log4jUtils.init();
         SpringApplication.run(UserApplication.class, args);
     }
 

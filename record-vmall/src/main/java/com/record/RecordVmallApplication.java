@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class RecordVmallApplication {
 
     public static void main(String[] args) throws Exception {
-        Log4jUtils.init();
+//        Log4jUtils.init();
         SpringApplication.run(RecordVmallApplication.class, args);
     }
 

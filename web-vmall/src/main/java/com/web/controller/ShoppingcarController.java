@@ -59,7 +59,7 @@ public class ShoppingcarController {
     @RequestMapping(value = "/deleteShoppingCar",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> deleteShoppingCar(int userId,int productId){
-        String url = PagesController.shoppingcarUrl+"/getShoppingCars";
+        String url = PagesController.shoppingcarUrl+"/deleteShoppingCar";
         Map<String, String> map = new HashMap<String, String>();
         map.put("userId", String.valueOf(userId));
         map.put("productId", String.valueOf(productId));

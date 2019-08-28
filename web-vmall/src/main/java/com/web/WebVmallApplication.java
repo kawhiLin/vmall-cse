@@ -13,7 +13,7 @@ public class WebVmallApplication {
 
     public static void main(String[] args) throws Exception {
 
-        Log4jUtils.init();
+//        Log4jUtils.init();
         SpringApplication.run(WebVmallApplication.class, args);
     }
 

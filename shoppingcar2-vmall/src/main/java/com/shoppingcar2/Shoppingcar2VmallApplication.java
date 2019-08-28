@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class Shoppingcar2VmallApplication {
 
     public static void main(String[] args) throws Exception {
-        Log4jUtils.init();
+//        Log4jUtils.init();
         SpringApplication.run(Shoppingcar2VmallApplication.class, args);
     }
 

@@ -14,7 +14,7 @@ import org.apache.servicecomb.foundation.common.utils.Log4jUtils;
 @EnableServiceComb
 public class ProductVmallApplication {
     public static void main(String[] args) throws Exception {
-        Log4jUtils.init();
+//        Log4jUtils.init();
 
         SpringApplication.run(ProductVmallApplication.class, args);
     }

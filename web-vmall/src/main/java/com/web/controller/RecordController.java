@@ -34,6 +34,10 @@ public class RecordController {
         argsBean.setMapString(JSONObject.toJSONString(map));
         String res = restTemplate.postForObject(url,argsBean,String.class);
 
+        //删除购物车记录
+        ShoppingcarController shoppingcarController = new ShoppingcarController();
+        shoppingcarController.deleteShoppingCar(userId,productId);
+
         System.out.println("----res:\n"+res);
         Map resultMap = (Map)JSON.parse(res);
         return resultMap;
