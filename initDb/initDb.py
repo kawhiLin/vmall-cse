@@ -56,3 +56,5 @@ with open(u'vmall2.sql', 'r+', encoding='utf-8') as f:
 # 关闭数据库连接
 db.close()
 print("init db succeed")
+while 1:
+    sleep(10)
