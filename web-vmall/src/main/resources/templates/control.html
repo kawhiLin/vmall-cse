@@ -13,13 +13,115 @@
             <!-- 控制栏 -->
             <div class="col-sm-3 col-md-2 sidebar sidebar-1">
                 <ul class="nav nav-sidebar">
+
+                    <li class="list-group-item-diy"><a href="#section3">模拟抢购</a></li>
+                    <li class="list-group-item-diy"><a href="#section4">停止抢购</a></li>
+                    <li class="list-group-item-diy"><a href="#section5">模拟故障</a></li>
+                    <li class="list-group-item-diy"><a href="#section6">恢复故障</a></li>
+                    <hr align="center" width="300color=#987cb9" size="1">
                     <li class="list-group-item-diy"><a href="#section1">查看所有用户<span class="sr-only">(current)</span></a></li>
                     <li class="list-group-item-diy"><a href="#section2">查看所有商品</a></li>
-                    <!--<li class="list-group-item-diy"><a href="#section3">添加商品</a></li>-->
                 </ul>
             </div>
             <!-- 控制内容 -->
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+                <!--模拟抢购-->
+                <div class="col-md-12">
+                    <hr/>
+                    <h1><a name="section3">模拟抢购</a></h1>
+                    <hr/>
+                    <div class="col-sm-offset-2 col-md-offest-2">
+                        <!-- 表单输入 -->
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <!--TODO输入校验-->
+                                <label for="TPSNum" class="col-sm-2 col-md-2 control-label">并发数</label>
+                                <div class="col-sm-6 col-md-6">
+                                    <input type="text" class="form-control" id="TPSNum" placeholder="50"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-6">
+                                    <button class="btn btn-lg btn-primary btn-block" type="submit"
+                                            onclick="sendTest()">开始
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+
+                <!--停止抢购-->
+                <div class="col-md-12">
+                    <hr/>
+                    <h1><a name="section4">停止抢购</a></h1>
+                    <hr/>
+                    <div class="col-sm-offset-2 col-md-offest-2">
+                        <!-- 表单输入 -->
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-6">
+                                    <button class="btn btn-lg btn-danger btn-block" type="submit"
+                                            onclick="stopTest()">停止
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+
+                <!--模拟故障-->
+                <div class="col-md-12">
+                    <hr/>
+                    <h1><a name="section5">模拟故障</a></h1>
+                    <hr/>
+                    <div class="col-sm-offset-2 col-md-offest-2">
+                        <!-- 表单输入 -->
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <!--TODO输入校验-->
+                                <label for="instanceIP" class="col-sm-2 col-md-2 control-label">order实例IP</label>
+                                <div class="col-sm-6 col-md-6">
+                                    <input type="text" class="form-control" id="instanceIP" placeholder="172.16.20.88"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-6">
+                                    <button class="btn btn-lg btn-primary btn-block" type="submit"
+                                            onclick="makeFault()">开始
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+
+                <!--恢复故障-->
+                <div class="col-md-12">
+                    <hr/>
+                    <h1><a name="section6">恢复故障</a></h1>
+                    <hr/>
+                    <div class="col-sm-offset-2 col-md-offest-2">
+                        <!-- 表单输入 -->
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-6">
+                                    <button class="btn btn-lg btn-danger btn-block" type="submit"
+                                            onclick="stopFault()">停止
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+
+
                 <div class="col-md-12">
                     <h1><a name="section1">用户信息</a></h1>
                     <hr/>
@@ -35,75 +137,6 @@
                     <br/>
                 </div>
 
-                <!--<div class="col-md-12">-->
-                    <!--<hr/>-->
-                    <!--<h1><a name="section3">添加商品</a></h1>-->
-                    <!--<hr/>-->
-                    <!--<div class="col-sm-offset-2 col-md-offest-2">-->
-                        <!--&lt;!&ndash; 表单输入 &ndash;&gt;-->
-                        <!--<div  class="form-horizontal">-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="productName" class="col-sm-2 col-md-2 control-label">商品名称</label>-->
-                                <!--<div class="col-sm-6 col-md-6">-->
-                                    <!--<input type="text" class="form-control" id="productName" placeholder="荣耀10" />-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="productDescribe" class="col-sm-2 col-md-2 control-label">商品描述</label>-->
-                                <!--<div class="col-sm-6 col-md-6">-->
-                                    <!--<textarea type="text" class="form-control" id="productDescribe" placeholder="balabalabalabala"></textarea>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="keyWord" class="col-sm-2 col-md-2 control-label">关键词</label>-->
-                                <!--<div class="col-sm-6 col-md-6">-->
-                                    <!--<textarea type="text" class="form-control" id="keyWord" placeholder="xxxx;xxxx;xxxx"></textarea>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="productPrice" class="col-sm-2 col-md-2 control-label">商品价格</label>-->
-                                <!--<div class="col-sm-6 col-md-6">-->
-                                    <!--<input type="text" class="form-control" id="productPrice" placeholder="399" />-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="productCount" class="col-sm-2 col-md-2 control-label">商品数量</label>-->
-                                <!--<div class="col-sm-6 col-md-6">-->
-                                    <!--<input type="text" class="form-control" id="productCount" placeholder="100" />-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="productType" class="col-sm-2 col-md-2 control-label">商品类别</label>-->
-                                <!--<div class="col-sm-6 col-md-6">-->
-                                    <!--<select name="productType" class="form-control" id="productType">-->
-                                        <!--<option value="1">手机</option>-->
-                                        <!--<option value="2">笔记本&平板</option>-->
-                                        <!--<option value="3">智能穿戴</option>-->
-                                        <!--<option value="4">智能家居</option>-->
-                                    <!--</select>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="productImgUpload" class="col-sm-2 col-md-2 control-label" accept="image/png">商品图片</label>-->
-                                <!--<div class="col-sm-6 col-md-6">-->
-                                    <!--<input name="productImgUpload" type="file"  id="productImgUpload"/>-->
-                                    <!--<p class="help-block">上传的图片大小应为280*280大小</p>-->
-                                <!--</div>-->
-                                <!--<button class="btn btn-primary col-sm-2 col-md-2" onclick="fileUpload()">上传图片</button>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<div class="col-sm-offset-2 col-sm-6" id="imgPreSee">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<div class="col-sm-offset-2 col-sm-6">-->
-                                    <!--<button class="btn btn-lg btn-primary btn-block" type="submit" onclick="addProduct()">添加商品</button>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<br/>-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
         </div>
     </div>
@@ -258,35 +291,34 @@
             listAllProduct();
         }
 
-        function addProduct() {
+        function sendTest() {
             var loadings = layer.load(0);
-            var product = {};
-            product.name = document.getElementById("productName").value;
-            product.description = document.getElementById("productDescribe").value;
-            product.keyWord = document.getElementById("keyWord").value;
-            product.price = document.getElementById("productPrice").value;
-            product.counts = document.getElementById("productCount").value;
-            product.type = document.getElementById("productType").value;
-            var addResult="";
+            var data = {};
+            data.TPSNum = document.getElementById("TPSNum").value;
+
+            $.ajax({
+                async : true,
+                type : 'POST',
+                url : '/startTestTPS',
+                data : data,
+                dataType : 'json'
+            });
+
+            layer.msg('开始抢购', {icon: 1, time: 1000});
+            layer.close(loadings)
+
+        }
+        function stopTest() {
+            var loadings = layer.load(0);
             $.ajax({
                 async : false,
                 type : 'POST',
-                url : '/addProduct',
-                data : product,
-                dataType : 'json',
-                success : function(result) {
-                    addResult = result.result;
-                },
-                error : function(result) {
-                    layer.alert('删除商品错误');
-                }
+                url : '/stopTestTPS',
+                data : null,
+                dataType : 'json'
             });
-            if(addResult == "success") {
-                fileUpload();
-                layer.msg('添加商品成功', {icon: 1, time: 1000});
-                layer.close(loadings)
-            }
-            listAllProduct();
+            layer.msg('停止抢购', {icon: 1, time: 1000});
+            layer.close(loadings)
         }
 
         function fileUpload() {

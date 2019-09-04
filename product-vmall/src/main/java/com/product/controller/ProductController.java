@@ -54,6 +54,12 @@ public class ProductController extends HttpServlet {
         return JSONObject.toJSONString(productService.getAllProduct());
     }
 
+    @RequestMapping(value = "/updateProductCounts", method = RequestMethod.POST)
+    public String updateProductCounts(@RequestBody ArgsBean argsBean){
+        return JSONObject.toJSONString(productService.updateProductCounts(argsBean));
+    }
+
+
 
     @RequestMapping(value = "/deleteProduct", method = RequestMethod.POST)
     public String deleteProduct(@RequestBody ArgsBean argsBean) {

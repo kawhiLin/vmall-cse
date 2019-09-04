@@ -33,6 +33,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 @RestSchema(schemaId = "order")
@@ -62,19 +64,32 @@ public class ShoppingRecordController {
 		System.out.println("url初始化：\n" + userUrl + "\n" + productUrl + "\n" + shoppingcarUrl + "\n" + recordUrl + "\n"+ evaluationUrl);
 	}
 
-	@RequestMapping(value = "/addShoppingRecord", method = RequestMethod.POST)
-	public String addShoppingRecord(@RequestBody ArgsBean argsBean) {
-    	// 统计add订单qps，请求到exporter
-		// String res = restTemplate.postForObject(url,argsBean,String.class);
-		try {
-			// 处理connect exporter异常
-			String res = restTemplate.getForObject(this.exporterUrl,String.class);
-			System.out.println("----add ordd, send to exporter. res:\n" + res);
-		}catch (Exception e){
-			System.out.println("ERROR ----add ordd, send to exporter failed!");
+
+	class MutliThread  implements Runnable{
+		@Override
+		public void run(){
+			try {
+				// 处理connect exporter异常
+				String res = restTemplate.getForObject(exporterUrl,String.class);
+				System.out.println("INFO ----add ordd, send to exporter. res:\n" + res);
+			}catch (Exception e){
+				System.out.println("ERROR ----add ordd, send to exporter failed!");
+			}
 		}
 
+	}
 
+
+	@RequestMapping(value = "/addShoppingRecord", method = RequestMethod.POST)
+	public String addShoppingRecord(@RequestBody ArgsBean argsBean) {
+		// 统计add订单qps，请求到exporter 转移到子线程处理
+		try {
+			ExecutorService service = Executors.newFixedThreadPool(1);//TPSNum是线程数
+			service.execute(new MutliThread());
+			service.shutdown();
+		}catch (Exception e) {
+			System.out.println("service.execute(new MutliThread()) failed:" + e.getMessage());
+		}
 
 		return JSONObject.toJSONString(shoppingRecordService.addShoppingRecord(argsBean));
 	}

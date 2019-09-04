@@ -38,7 +38,20 @@ public class  ProductService {
         return resultMap;
     }
 
-     public  Response deleteProduct(ArgsBean argsBean){
+
+    public Map<String, Object> updateProductCounts(ArgsBean argsBean){
+        Map map = (Map) JSONObject.parse(argsBean.getMapString());
+        //TODO 异常处理
+        String id = (String)map.get("id");
+        String count = (String)map.get("count");
+        Product product = productRepository.findOne(Integer.valueOf(id));
+        product.setCounts(product.getCounts() - Integer.valueOf(count));
+        productRepository.save(product);
+        return null;
+    }
+
+
+    public  Response deleteProduct(ArgsBean argsBean){
          Map map = (Map) JSONObject.parse(argsBean.getMapString());
          //TODO 异常处理
          String id = (String)map.get("productId");

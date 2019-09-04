@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class ShoppingRecordService {
@@ -22,6 +24,28 @@ public class ShoppingRecordService {
     RecordRepository recordRepository;
 
     private static RestTemplate restTemplate = RestTemplateBuilder.create();
+
+    private String counts2Thread;
+    private int id2Thread;
+
+    class MutliThread  implements Runnable{
+        @Override
+        public void run(){
+            try {
+                String url2 = ShoppingRecordController.productUrl+"/updateProductCounts";
+                Map<String, String> map2 = new HashMap<String, String>();
+                map2.put("id", String.valueOf(id2Thread));
+                map2.put("count", counts2Thread);
+                ArgsBean argsBean2 = new ArgsBean();
+                argsBean2.setMapString(JSONObject.toJSONString(map2));
+                System.out.println("argsBean2:"+argsBean2.getMapString());
+                String result2 = restTemplate.postForObject(url2,argsBean2,String.class);
+            }catch (Exception e){
+                System.out.println("ERROR ----"+e.getMessage());
+            }
+        }
+
+    }
 
     @Transactional
     public Map<String, Object> addShoppingRecord(ArgsBean argsBean){
@@ -35,8 +59,6 @@ public class ShoppingRecordService {
         System.out.println("我添加了" + userId + " " + productId);
         String result = null;
 
-        // Product product = productService.getProduct(productId);
-        //String result1 = HttpUtil.sendPost(url1, reqMap);
         String url1 = ShoppingRecordController.productUrl+"/getProductById";
         Map<String, String> map1 = new HashMap<String, String>();
         map1.put("productId", productId);
@@ -57,25 +79,17 @@ public class ShoppingRecordService {
             shoppingRecord.setProductPrice(product.getPrice() * Integer.valueOf(counts));
             shoppingRecord.setCounts(Integer.valueOf(counts));
             shoppingRecord.setOrderStatus(0);
-            Date date = new Date();
-            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-            shoppingRecord.setTime(sf.format(date));
-            product.setCounts(product.getCounts() - Integer.valueOf(counts));
-            // productService.updateProduct(product);
-            String url2 = ShoppingRecordController.productUrl+"/updateProductById";
-            Map<String, String> map2 = new HashMap<String, String>();
-            String productJsonString2 = JSON.toJSONString(product);
-            map2.put("productJsonString", productJsonString2);
-
-            //String result2 = HttpUtil.sendPost(url2, map2);
-            //String result2 = restTemplate.postForObject(url2,map2,String.class);
-            ArgsBean argsBean2 = new ArgsBean();
-            argsBean2.setMapString(JSONObject.toJSONString(map2));
-            System.out.println("argsBean2:"+argsBean2.getMapString());
-            String result2 = restTemplate.postForObject(url2,argsBean2,String.class);
-
-            System.out.println("result2:" + result2);
-
+//            Date date = new Date();
+//            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+//            shoppingRecord.setTime(sf.format(date));
+            shoppingRecord.setTime(UUID.randomUUID().toString().substring(0,11));
+            //product.setCounts(product.getCounts() - Integer.valueOf(counts));
+            // TODO 发送请求，updateCounts
+            id2Thread = product.getId();
+            counts2Thread =  counts;
+            ExecutorService service = Executors.newFixedThreadPool(1);//TPSNum是线程数
+            service.execute(new MutliThread());
+            service.shutdown();
             recordRepository.save(shoppingRecord);
             result = "success";
         } else {

@@ -19,6 +19,8 @@ cse:
   monitor:
     client:
       serverUri: http://127.0.0.1:30109
+      # 6.5.x 新配置
+      enable: true
   rest:
     address: 0.0.0.0:8085
   #When a local project is deployed as a container outside a cluster, you need to delete all monitor and credentials comments and configure the AK/SK.

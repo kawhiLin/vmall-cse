@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,6 +23,48 @@ import org.springframework.web.client.RestTemplate;
 public class RecordController {
 
     private static RestTemplate restTemplate = RestTemplateBuilder.create();
+
+    private boolean isTestingTPS = false;
+
+    class MutliThread  implements Runnable{
+        @Override
+        public void run(){
+            //这里实现http请求
+            System.out.println("http request send!");
+            addShoppingRecord(1,1,1);
+        }
+    }
+
+// 压测
+    @RequestMapping(value = "/startTestTPS",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> testTPS(int TPSNum){
+        isTestingTPS = true;
+        int j = 0;
+        while (isTestingTPS){
+            try {
+                ExecutorService service = Executors.newFixedThreadPool(TPSNum);//TPSNum是线程数
+                for (int i = 0; i < TPSNum && isTestingTPS; i++){
+                    System.out.println(j);
+                    j ++;
+                    service.execute(new MutliThread());
+                }
+                service.shutdown();
+                Thread.sleep(1000);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    @RequestMapping(value = "/stopTestTPS",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> stopTestTPS(){
+        isTestingTPS = false;
+        System.out.println("stop test");
+        return null;
+
+    }
 
     @RequestMapping(value = "/addShoppingRecord",method = RequestMethod.POST)
     @ResponseBody
@@ -35,8 +80,8 @@ public class RecordController {
         String res = restTemplate.postForObject(url,argsBean,String.class);
 
         //删除购物车记录
-        ShoppingcarController shoppingcarController = new ShoppingcarController();
-        shoppingcarController.deleteShoppingCar(userId,productId);
+//        ShoppingcarController shoppingcarController = new ShoppingcarController();
+//        shoppingcarController.deleteShoppingCar(userId,productId);
 
         System.out.println("----res:\n"+res);
         Map resultMap = (Map)JSON.parse(res);
