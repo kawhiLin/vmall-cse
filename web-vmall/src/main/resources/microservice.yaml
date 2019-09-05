@@ -32,9 +32,9 @@ cse:
   handler:
     chain:
       Consumer:
-        default: qps-flowcontrol-consumer,loadbalance
+        default: qps-flowcontrol-consumer,loadbalance,bizkeeper-consumer
       Provider:
-        default: qps-flowcontrol-provider
+        default: qps-flowcontrol-provider,bizkeeper-provider
   tracing:
     enabled: true
     samplingRate: 1.0
