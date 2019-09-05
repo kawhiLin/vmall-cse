@@ -5,11 +5,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.web.utils.ArgsBean;
 
 import org.apache.servicecomb.provider.springmvc.reference.RestTemplateBuilder;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -35,12 +40,51 @@ public class RecordController {
         }
     }
 
+    //模拟故障
+    @RequestMapping(value = "/makeFault",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> makeFault(String instanceIP){
+
+        String url = "http://"+instanceIP+":8084/order/makeFault";
+        System.out.println("makeFault:"+url);
+        try{
+            restTemplate.postForObject(url,null,String.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+        Map<String,Object> res = new HashMap<String,Object>();
+        res.put("result","success");
+        return res;
+    }
+
+    //恢复故障
+    @RequestMapping(value = "/stopFault",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> stopFault(String instanceIP){
+
+        String url = "http://"+instanceIP+":8084/order/stopFault";
+        System.out.println("stopFault:"+url);
+        try{
+            restTemplate.postForObject(url,null,String.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+        Map<String,Object> res = new HashMap<String,Object>();
+        res.put("result","success");
+        return res;
+    }
+
 // 压测
     @RequestMapping(value = "/startTestTPS",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> testTPS(int TPSNum){
         isTestingTPS = true;
         int j = 0;
+
         while (isTestingTPS){
             try {
                 ExecutorService service = Executors.newFixedThreadPool(TPSNum);//TPSNum是线程数
@@ -50,12 +94,13 @@ public class RecordController {
                     service.execute(new MutliThread());
                 }
                 service.shutdown();
+
                 Thread.sleep(1000);
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
-        return null;
+            return null;
     }
     @RequestMapping(value = "/stopTestTPS",method = RequestMethod.POST)
     @ResponseBody

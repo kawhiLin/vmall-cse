@@ -226,9 +226,11 @@
                 dataType : 'json',
                 success : function(result) {
                     shoppingRecordProducts = result.result;
+                    return;
                 },
                 error : function(result) {
                     layer.alert('查询错误');
+                    layer.close(loading);
                 }
             });
             shoppingRecordProducts = eval("("+shoppingRecordProducts+")");

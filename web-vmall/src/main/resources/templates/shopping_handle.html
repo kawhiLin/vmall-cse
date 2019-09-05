@@ -233,6 +233,7 @@
                 },
                 error : function(result) {
                     layer.alert('查询错误');
+                    layer.close(loading);
                 }
             });
             shoppingRecordProducts = eval("("+shoppingRecordProducts+")");

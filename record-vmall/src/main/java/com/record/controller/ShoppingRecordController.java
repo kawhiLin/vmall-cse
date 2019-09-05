@@ -46,6 +46,7 @@ public class ShoppingRecordController {
 	private ShoppingRecordService shoppingRecordService;
 
 	private static RestTemplate restTemplate = RestTemplateBuilder.create();
+	private boolean isFault = false;
 
 	public static String userUrl;
 	public static String productUrl;
@@ -77,6 +78,29 @@ public class ShoppingRecordController {
 			}
 		}
 
+	}
+
+	// 开启模拟故障，设置故障开关为true
+	@RequestMapping(value = "/makeFault", method = RequestMethod.POST)
+	public String makeFault() {
+		isFault = true;
+		return null;
+	}
+
+	// 恢复故障，设置故障开关为false
+	@RequestMapping(value = "/stopFault", method = RequestMethod.POST)
+	public String stopFault() {
+		isFault = false;
+		return null;
+	}
+	// 健康检查接口
+	@RequestMapping(value = "/healthCheck", method = RequestMethod.GET)
+	public String healthCheck() {
+		if (isFault){
+			// 人为抛出异常
+			throw new RuntimeException("[E001]订单业务出现故障，需要重启恢复");
+		}
+		return null;
 	}
 
 
@@ -144,7 +168,7 @@ public class ShoppingRecordController {
 
 	@RequestMapping(value = "/getAllShoppingRecords", method = RequestMethod.POST)
 	public String getAllShoppingRecords() {
-
+		if (isFault) throw new RuntimeException("[E001]订单业务出现故障，需要重启恢复");
 		List<ShoppingRecord> shoppingRecordList = shoppingRecordService.getAllShoppingRecords();
 		String shoppingRecords = JSONArray.toJSONString(shoppingRecordList);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
