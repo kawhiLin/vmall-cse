@@ -32,6 +32,8 @@
         <module>shoppingcar2-vmall</module>
         <module>record-vmall</module>
         <module>evaluation-vmall</module>
+        <module>newArrivals</module>
+        <module>newArrivals2</module>
     </modules>
 
     <dependencyManagement>

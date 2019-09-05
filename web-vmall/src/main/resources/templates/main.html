@@ -20,6 +20,9 @@
                     <li class="list-group-item-diy"><a href="#productArea3">智能穿戴</a></li>
                     <li class="list-group-item-diy"><a href="#productArea4">智能家居</a></li>
 
+                    <div name="newArrivals" class="row pd-2" id="newArrivals">
+                    </div>
+
                 </ul>
             </div>
             <!-- 控制内容 -->
@@ -54,11 +57,91 @@
         productType[3] = "智能穿戴";
         productType[4] = "智能家居";
 
-
+        var allProduct = getAllProducts();
         listProducts();
 
+        // $(document).ready(function () {
+        //     listNewArrivals();
+        // });
+        //先加载基础页面，再尝试加载newArrivals页面，防止请求超时页面卡死
+        window.onload=function () {  listNewArrivals(); };
+
+        function listNewArrivals() {
+            var version = getNewArrivals();
+            if (version == null) {
+                // 不展示
+            }else if (version == "v1.0"){
+                // 展示1.0版本
+                var newArrivals = document.getElementById("newArrivals");
+                var html = "";
+                var i = 0;
+                var imgURL = "/img/"+allProduct[i].id+".png";
+                html += '<hr/><h4><p style="text-align: center;">新品推荐V1.0</p><hr/><div class="col-sm-4 col-md-4" >'+
+                    '<div class="boxes pointer" onclick="productDetail('+allProduct[i].id+')">'+
+                    '<div class="">'+
+                    '<img src="'+imgURL+'" style="position: relative;height: 50%;width: 50%;left: 30%;">'+
+                    '</div>'+
+                    '<p style="position: relative;left:36%;">'+allProduct[i].name+'</p>'+
+                    '</div>'+
+                    '</div>';
+                newArrivals.innerHTML += html;
+            } else {
+                // 展示2.0版本
+                var newArrivals = document.getElementById("newArrivals");
+                var html = "";
+                var i = 4;
+                var imgURL = "/img/"+allProduct[i].id+".png";
+                html += '<hr/><h4><p style="text-align: center;">新品推荐V2.0</p><hr/><div class="col-sm-4 col-md-4" >'+
+                    '<div class="boxes pointer" onclick="productDetail('+allProduct[i].id+')">'+
+                    '<div class="">'+
+                    '<img src="'+imgURL+'" style="position: relative;height: 50%;width: 50%;left: 30%;">'+
+                    '</div>'+
+                    '<p style="position: relative;left:36%;">'+allProduct[i].name+'</p>'+
+                    '</div>'+
+                    '</div>';
+                newArrivals.innerHTML += html;
+            }
+        }
+
+        function getNewArrivals(){
+            // 请求newArrivals微服务 返回version
+            var version = null;
+            //若未登陆，默认version=null 不显示该模块
+            var currentUser = /*[[${session.currentUser}]]*/ '';
+            if (currentUser == null || currentUser == undefined || currentUser == ""){
+                return null;
+            }
+            // console.log(currentUser);
+            // console.log(currentUser.name);
+            // ajax
+            var data = {};
+            data.username = currentUser.name;
+            $.ajax({
+                async : false, //设置同步
+                type : 'POST',
+                url : '/getNewArrivals',
+                data : data,
+                dataType : 'json',
+                success : function(result) {
+                    if (result.version == "v1.0") {
+                        version = "v1.0"
+                        console.log("version="+version);
+                    }
+                    else if(result.version == "v2.0") {
+                        version = "v2.0";
+                        console.log("version="+version);
+                    }
+                },
+                error : function(resoult) {
+                    version = null;
+                    console.log("请求超时,version="+version);
+                }
+            });
+            return version;
+        }
+
         function listProducts() {
-            var allProduct = getAllProducts();
+
             var mark = new Array;
             mark[1] = 0;
             mark[2] = 0;
