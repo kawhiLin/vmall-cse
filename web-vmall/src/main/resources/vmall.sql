@@ -103,7 +103,8 @@ CREATE TABLE `user_detail`  (
 -- Records of user_detail
 -- ----------------------------
 INSERT INTO `user_detail` VALUES (1, 'admin', '', 0, '', '', '', '2019-02-20 11:18:54');
-INSERT INTO `user_detail` VALUES (2, 'user01', '', 0, '', '', '', '2019-02-20 11:19:25');
+INSERT INTO `user_detail` VALUES (2, 'hangzhou_user01', '', 0, '', '', '', '2019-02-20 11:19:25');
+INSERT INTO `user_detail` VALUES (3, 'shenzhen_user01', '', 0, '', '', '', '2019-02-20 11:19:25');
 
 -- ----------------------------
 -- Table structure for user_main

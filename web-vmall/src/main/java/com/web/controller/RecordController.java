@@ -28,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 public class RecordController {
 
     private static RestTemplate restTemplate = RestTemplateBuilder.create();
+    private String makeFault_instanceIP = null;
 
     private boolean isTestingTPS = false;
 
@@ -49,6 +50,7 @@ public class RecordController {
         System.out.println("makeFault:"+url);
         try{
             restTemplate.postForObject(url,null,String.class);
+            this.makeFault_instanceIP = instanceIP;
         }catch (Exception e){
             e.printStackTrace();
             return null;
@@ -62,9 +64,14 @@ public class RecordController {
     //恢复故障
     @RequestMapping(value = "/stopFault",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> stopFault(String instanceIP){
+    public Map<String,Object> stopFault(){
+        Map<String,Object> res = new HashMap<String,Object>();
+        if (makeFault_instanceIP==null){
+            res.put("result","instanceIP is null");
+            return res;
+        }
 
-        String url = "http://"+instanceIP+":8084/order/stopFault";
+        String url = "http://"+this.makeFault_instanceIP+":8084/order/stopFault";
         System.out.println("stopFault:"+url);
         try{
             restTemplate.postForObject(url,null,String.class);
@@ -73,7 +80,6 @@ public class RecordController {
             return null;
         }
 
-        Map<String,Object> res = new HashMap<String,Object>();
         res.put("result","success");
         return res;
     }

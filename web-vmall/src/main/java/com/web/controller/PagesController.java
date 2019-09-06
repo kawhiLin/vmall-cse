@@ -149,12 +149,11 @@ public class PagesController {
 
     @RequestMapping(value = "/getNewArrivals", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> getNewArrivals(String username) throws InterruptedException {
+    public Map<String, Object> getNewArrivals(String username) {
         System.out.println("getNewArrivals");
-
-        String url = this.newArrivalsUrl + "/getNewArrivals";
+        String url = this.newArrivalsUrl + "/getNewArrivals?username="+username;
         //Thread.sleep(5000);
-        String version = restTemplate.getForObject(url,String.class,username);
+        String version = restTemplate.getForObject(url,String.class);
 
         Map<String, Object> res = new HashMap<>();
         res.put("version",version);

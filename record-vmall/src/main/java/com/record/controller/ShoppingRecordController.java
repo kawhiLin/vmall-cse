@@ -98,7 +98,7 @@ public class ShoppingRecordController {
 	public String healthCheck() {
 		if (isFault){
 			// 人为抛出异常
-			throw new RuntimeException("[E001]订单业务出现故障，需要重启恢复");
+			throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
 		}
 		return null;
 	}
@@ -141,6 +141,7 @@ public class ShoppingRecordController {
 
 	@RequestMapping(value = "/getShoppingRecords", method = RequestMethod.POST)
 	public String getShoppingRecords(@RequestBody ArgsBean argsBean) {
+		if (isFault) throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
 		Map map = (Map) JSONObject.parse(argsBean.getMapString());
 		//TODO 异常处理
 		String userId = (String)map.get("userId");
@@ -168,7 +169,7 @@ public class ShoppingRecordController {
 
 	@RequestMapping(value = "/getAllShoppingRecords", method = RequestMethod.POST)
 	public String getAllShoppingRecords() {
-		if (isFault) throw new RuntimeException("[E001]订单业务出现故障，需要重启恢复");
+		if (isFault) throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
 		List<ShoppingRecord> shoppingRecordList = shoppingRecordService.getAllShoppingRecords();
 		String shoppingRecords = JSONArray.toJSONString(shoppingRecordList);
 		Map<String, Object> resultMap = new HashMap<String, Object>();

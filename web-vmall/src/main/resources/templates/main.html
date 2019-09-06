@@ -13,25 +13,21 @@
             <!-- 控制栏 -->
             <div class="col-sm-3 col-md-2 sidebar sidebar-1">
                 <ul class="nav nav-sidebar">
-                    <li class="list-group-item-diy"><a href="#productArea1">手机 <span
-                            class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="list-group-item-diy"><a href="#productArea2">笔记本&平板</a></li>
-                    <li class="list-group-item-diy"><a href="#productArea3">智能穿戴</a></li>
-                    <li class="list-group-item-diy"><a href="#productArea4">智能家居</a></li>
-
-                    <div name="newArrivals" class="row pd-2" id="newArrivals">
-                    </div>
-
+                    <li class="list-group-item-diy"><h4> <a href="#productArea1">手机 <span
+                            class="sr-only">(current)</span></a></h4>
+                    </li><hr>
+                    <li class="list-group-item-diy"><h4> <a href="#productArea2">笔记本&平板</a></h4></li><hr>
+                    <li class="list-group-item-diy"><h4> <a href="#productArea3">智能穿戴</a></h4></li><hr>
+                    <li class="list-group-item-diy"><h4> <a href="#productArea4">智能家居</a></h4></li>
                 </ul>
             </div>
             <!-- 控制内容 -->
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <div class="jumbotron">
-                    <h1>欢迎来到VMALL</h1>
-                    <p>VMALL是一个的购物网站，你可以在这里模拟购买商品</p>
+                    <h1>VMALL商城</h1>
                 </div>
-
+                <div id="newArrivals">
+                </div>
                 <div name="productArea1" class="row pd-10" id="productArea1">
                 </div>
 
@@ -64,43 +60,28 @@
         //     listNewArrivals();
         // });
         //先加载基础页面，再尝试加载newArrivals页面，防止请求超时页面卡死
-        window.onload=function () {  listNewArrivals(); };
+        window.onload=function () {
+            listNewArrivals();
+        };
 
         function listNewArrivals() {
             var version = getNewArrivals();
+            var imgURL = "";
             if (version == null) {
                 // 不展示
+                return;
             }else if (version == "v1.0"){
                 // 展示1.0版本
-                var newArrivals = document.getElementById("newArrivals");
-                var html = "";
-                var i = 0;
-                var imgURL = "/img/"+allProduct[i].id+".png";
-                html += '<hr/><h4><p style="text-align: center;">新品推荐V1.0</p><hr/><div class="col-sm-4 col-md-4" >'+
-                    '<div class="boxes pointer" onclick="productDetail('+allProduct[i].id+')">'+
-                    '<div class="">'+
-                    '<img src="'+imgURL+'" style="position: relative;height: 50%;width: 50%;left: 30%;">'+
-                    '</div>'+
-                    '<p style="position: relative;left:36%;">'+allProduct[i].name+'</p>'+
-                    '</div>'+
-                    '</div>';
-                newArrivals.innerHTML += html;
+                imgURL = "/img/newArrivals01.jpg";
             } else {
                 // 展示2.0版本
-                var newArrivals = document.getElementById("newArrivals");
-                var html = "";
-                var i = 4;
-                var imgURL = "/img/"+allProduct[i].id+".png";
-                html += '<hr/><h4><p style="text-align: center;">新品推荐V2.0</p><hr/><div class="col-sm-4 col-md-4" >'+
-                    '<div class="boxes pointer" onclick="productDetail('+allProduct[i].id+')">'+
-                    '<div class="">'+
-                    '<img src="'+imgURL+'" style="position: relative;height: 50%;width: 50%;left: 30%;">'+
-                    '</div>'+
-                    '<p style="position: relative;left:36%;">'+allProduct[i].name+'</p>'+
-                    '</div>'+
-                    '</div>';
-                newArrivals.innerHTML += html;
+                imgURL = "/img/newArrivals02.jpg";
             }
+            console.log(imgURL);
+            var html = '<div class="jumbotron"><p>新品推荐</p>';
+            html += '<img src="'+imgURL+'" style="width: 100%;height: 100%;position: relative;">'+
+                '</div>';
+            newArrivals.innerHTML += html;
         }
 
         function getNewArrivals(){
@@ -111,9 +92,7 @@
             if (currentUser == null || currentUser == undefined || currentUser == ""){
                 return null;
             }
-            // console.log(currentUser);
-            // console.log(currentUser.name);
-            // ajax
+
             var data = {};
             data.username = currentUser.name;
             $.ajax({

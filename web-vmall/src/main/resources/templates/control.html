@@ -13,14 +13,9 @@
             <!-- 控制栏 -->
             <div class="col-sm-3 col-md-2 sidebar sidebar-1">
                 <ul class="nav nav-sidebar">
-
                     <li class="list-group-item-diy"><a href="#section3">模拟抢购</a></li>
-                    <li class="list-group-item-diy"><a href="#section4">停止抢购</a></li>
                     <li class="list-group-item-diy"><a href="#section5">模拟故障</a></li>
-                    <li class="list-group-item-diy"><a href="#section6">恢复故障</a></li>
-                    <!--<hr align="center" width="300color=#987cb9" size="1">-->
-                    <!--<li class="list-group-item-diy"><a href="#section1">查看所有用户<span class="sr-only">(current)</span></a></li>-->
-                    <!--<li class="list-group-item-diy"><a href="#section2">查看所有商品</a></li>-->
+                    <li class="list-group-item-diy"><a href="#section7">重置数据库</a></li>
                 </ul>
             </div>
             <!-- 控制内容 -->
@@ -37,6 +32,7 @@
                             <div class="form-group">
                                 <!--TODO输入校验-->
                                 <label for="TPSNum" class="col-sm-2 col-md-2 control-label">请求数</label>
+                                <div  id="tpsStatus" style="display:none; position: absolute; left: 75%; top: 58%;"><img src="/img/loading.gif">&nbsp;&nbsp;并发请求中...</div>
                                 <div class="col-sm-6 col-md-6">
                                     <input type="text" class="form-control" id="TPSNum" placeholder="不超过100，如20"/>
                                 </div>
@@ -46,28 +42,11 @@
                                     <button class="btn btn-lg btn-primary btn-block" type="submit"
                                             onclick="sendTest()">开始
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                        <br/>
-                    </div>
-                </div>
-
-                <!--停止抢购-->
-                <div class="col-md-12">
-                    <hr/>
-                    <h1><a name="section4">停止抢购</a></h1>
-                    <hr/>
-                    <div class="col-sm-offset-2 col-md-offest-2">
-                        <!-- 表单输入 -->
-                        <div class="form-horizontal">
-
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-6">
                                     <button class="btn btn-lg btn-danger btn-block" type="submit"
                                             onclick="stopTest()">停止
                                     </button>
                                 </div>
+
                             </div>
                         </div>
                         <br/>
@@ -84,6 +63,7 @@
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label for="instanceIP" class="col-sm-2 col-md-2 control-label">order实例IP</label>
+                                <div  id="instanceStatus" style="display:none; position: absolute; left: 75%; top: 58%;"><img src="/img/warning.png" style="width: 30px">&nbsp;&nbsp;实例故障...</div>
                                 <div class="col-sm-6 col-md-6">
                                     <input type="text" class="form-control" id="instanceIP" placeholder="172.16.20.88"/>
                                 </div>
@@ -91,31 +71,8 @@
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-sm-6">
                                     <button class="btn btn-lg btn-primary btn-block" type="submit"
-                                            onclick="makeFault()">开始
+                                            onclick="makeFault()">触发
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                        <br/>
-                    </div>
-                </div>
-
-                <!--恢复故障-->
-                <div class="col-md-12">
-                    <hr/>
-                    <h1><a name="section6">故障恢复</a></h1>
-                    <hr/>
-                    <div class="col-sm-offset-2 col-md-offest-2">
-                        <!-- 表单输入 -->
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label for="instanceIP" class="col-sm-2 col-md-2 control-label">order实例IP</label>
-                                <div class="col-sm-6 col-md-6">
-                                    <input type="text" class="form-control" id="instanceIP2" placeholder="172.16.20.88"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-6">
                                     <button class="btn btn-lg btn-danger btn-block" type="submit"
                                             onclick="stopFault()">恢复
                                     </button>
@@ -125,41 +82,25 @@
                         <br/>
                     </div>
                 </div>
-                <!--&lt;!&ndash;恢复故障&ndash;&gt;-->
-                <!--<div class="col-md-12">-->
-                    <!--<hr/>-->
-                    <!--<h1><a name="section6">恢复故障</a></h1>-->
-                    <!--<hr/>-->
-                    <!--<div class="col-sm-offset-2 col-md-offest-2">-->
-                        <!--&lt;!&ndash; 表单输入 &ndash;&gt;-->
-                        <!--<div class="form-horizontal">-->
-                            <!--<div class="form-group">-->
-                                <!--<div class="col-sm-offset-2 col-sm-6">-->
-                                    <!--<button class="btn btn-lg btn-danger btn-block" type="submit"-->
-                                            <!--onclick="stopFault()">停止-->
-                                    <!--</button>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<br/>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-
-                <!--<div class="col-md-12">-->
-                    <!--<h1><a name="section1">用户信息</a></h1>-->
-                    <!--<hr/>-->
-                    <!--<table class="table table-hover center" id="userTable">-->
-                    <!--</table>-->
-                <!--</div>-->
-
-                <!--<div class="col-md-12">-->
-                    <!--<hr/>-->
-                    <!--<h1><a name="section2">商品信息</a></h1>-->
-                    <!--<hr/>-->
-                    <!--<div class="col-lg-12 col-md-12 col-sm-12" id="productArea"></div>-->
-                    <!--<br/>-->
-                <!--</div>-->
+                <!--重置数据库-->
+                <div class="col-md-12">
+                    <hr/>
+                    <h1><a name="section7">重置数据库</a></h1>
+                    <hr/>
+                    <div class="col-sm-offset-2 col-md-offest-2">
+                        <!-- 表单输入 -->
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-6">
+                                    <button class="btn btn-lg btn-danger btn-block" type="submit"
+                                            onclick="resetDb()">重置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -167,13 +108,7 @@
     <script src="/js/ajaxfileupload.js" type="text/javascript"></script>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        //var loading = layer.load(0);
-        //listAllUser();
-        //listAllProduct();
-        //layer.close(loading);
-        //列出所有用户
-
-        // 模拟故障
+          // 模拟故障
         function makeFault() {
             // 校验IP输入框
             var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
@@ -195,6 +130,8 @@
                 data : data,
                 dataType : 'json',
                 success : function() {
+                    div = document.getElementById("instanceStatus");
+                    div.setAttribute("style","position: absolute; left: 75%; top: 58%;");
                     layer.msg('成功模拟故障', {icon: 1, time: 1000});
                     layer.close(loadings)
                 },
@@ -207,18 +144,7 @@
 
         // 故障恢复
         function stopFault() {
-            // 校验IP输入框
-            var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
-            var text_instanceIP = document.getElementById("instanceIP2");
-            var reg = text_instanceIP.value.match(exp);
-            if(reg==null)
-            {
-                layer.alert("IP地址不合法！");
-                return;
-            }
-            var loadings = layer.load(0);
             var data = {};
-            data.instanceIP = text_instanceIP.value;
             $.ajax({
                 async : true,   //异步执行（timeout才生效）
                 type : 'POST',
@@ -226,9 +152,16 @@
                 url : '/stopFault',
                 data : data,
                 dataType : 'json',
-                success : function() {
-                    layer.msg('故障消除', {icon: 1, time: 1000});
-                    layer.close(loadings)
+                success : function(res) {
+                    if(res.result=="success"){
+                        div = document.getElementById("instanceStatus");
+                        div.setAttribute("style","display:none;");
+                        layer.msg('故障消除', {icon: 1, time: 1000});
+                        layer.close(loadings)
+                    }else {
+                        layer.alert('请求超时，请检查实例IP是否正确');
+                        layer.close(loadings)
+                    }
                 },
                 error : function() {
                     layer.alert('请求超时，请检查实例IP是否正确');
@@ -244,7 +177,11 @@
             var loadings = layer.load(0);
             var data = {};
             data.TPSNum = document.getElementById("TPSNum").value;
-
+            if (data.TPSNum==null || data.TPSNum=="") {
+                layer.alert('请求数不能为空');
+                layer.close(loadings)
+                return;
+            }
             $.ajax({
                 async : true,
                 type : 'POST',
@@ -252,8 +189,9 @@
                 data : data,
                 dataType : 'json'
             });
-
-            layer.msg('开始抢购', {icon: 1, time: 1000});
+            div = document.getElementById("tpsStatus");
+            div.setAttribute("style","position: absolute; left: 75%; top: 58%;");
+            layer.msg('开始抢购', {icon: 1, time: 3000});
             layer.close(loadings)
 
         }
@@ -267,10 +205,26 @@
                 data : null,
                 dataType : 'json'
             });
-            layer.msg('停止抢购', {icon: 1, time: 1000});
+            div = document.getElementById("tpsStatus");
+            div.setAttribute("style","display:none;");
+            layer.msg('停止抢购', {icon: 1, time: 3000});
             layer.close(loadings)
         }
 
+
+        // 重置数据库 TODO
+        function resetDb() {
+            var loadings = layer.load(0);
+            $.ajax({
+                async : false,
+                type : 'GET',
+                url : '/resetDb',
+                data : null,
+                dataType : 'json'
+            });
+            layer.msg('重置成功', {icon: 1, time: 3000});
+            layer.close(loadings)
+        }
 
         // 校验TPS输入框
         var text_TPSNum = document.getElementById("TPSNum");
@@ -281,192 +235,8 @@
             }
         }
 
-
-
-
-        function listAllUser() {
-            var userTable = document.getElementById("userTable");
-            var allUser = getAllUsers();
-            userTable.innerHTML = '<tr>'+
-                '<th> 用户ID </th>'+
-                '<th> 用户名</th>'+
-                '<th> 昵称</th>'+
-                '<th> 邮箱</th>'+
-                '<th> 是否删除</th>'+
-                '</tr>';
-            var html = "";
-            for(var i=0;i<allUser.length;i++){
-                html += '<tr>'+
-                    '<td>'+allUser[i].id+'</td>'+
-                    '<td>'+allUser[i].name+'</td>'+
-                    '<td>'+allUser[i].nickName+'</td>'+
-                    '<td>'+allUser[i].email+'</td>'+
-                    '<td>'+
-                    '<button class="btn btn-primary btn-sm" type="submit" onclick="deleteUser('+allUser[i].id+')">删除</button>'+
-                    '</td>'+
-                    '</tr>';
-            }
-            userTable.innerHTML += html;
-        }
-
-        function getAllUsers() {
-            var allUsers = "";
-            var nothing = {};
-            $.ajax({
-                async : false, //设置同步
-                type : 'POST',
-                url : '/getAllUser',
-                data : nothing,
-                dataType : 'json',
-                success : function(result) {
-                    if (result!=null) {
-                        allUsers = result.allUsers;
-                    }
-                    else{
-                        layer.alert('查询所有用户错误');
-                    }
-                },
-                error : function(resoult) {
-                    layer.alert('查询所有用户错误');
-                }
-            });
-            allUsers = eval("("+allUsers+")");
-            return allUsers;
-        }
-
-
-        function listAllProduct() {
-            var productArea = document.getElementById("productArea");
-            var allProduct = getAllProducts();
-            var html="";
-            productArea.innerHTML = '';
-            for(var i=0;i<allProduct.length;i++){
-                var imgURL = "/img/"+allProduct[i].id+".png";
-                html+='<div class="col-sm-4 col-md-4 pd-5">'+
-                    '<div class="boxes">'+
-                    '<div class="big bigimg">'+
-                    '<img src="'+imgURL+'">'+
-                    '</div>'+
-                    '<p class="font-styles center">'+allProduct[i].name+'</p>'+
-                    '<p class="pull-right">价格：'+allProduct[i].price+'</p>'+
-                    '<p class="pull-left">库存：'+allProduct[i].counts+'</p>'+
-                    '<div class = "row">'+
-                    '<button class="btn btn-primary delete-button" type="submit" onclick="deleteProduct('+allProduct[i].id+')">删除商品</button>'+
-                    '</div>'+
-                    '</div>'+
-                    '</div>';
-            }
-            productArea.innerHTML+=html;
-        }
-        //列出所有商品
-
-        function getAllProducts() {
-            var allProducts = null;
-            var nothing = {};
-            $.ajax({
-                async : false, //设置同步
-                type : 'POST',
-                url : '/getAllProducts',
-                data : nothing,
-                dataType : 'json',
-                success : function(result) {
-                    if (result!=null) {
-                        allProducts = result.allProducts;
-                    }
-                    else{
-                        layer.alert('查询所有商品错误');
-                    }
-                },
-                error : function(resoult) {
-                    layer.alert('查询所有商品错误');
-                }
-            });
-            allProducts = eval("("+allProducts+")");
-            return allProducts;
-        }
-
-        function deleteUser(id) {
-            var user = {};
-            user.id = id;
-            var deleteResult = "";
-            $.ajax({
-                async : false,
-                type : 'POST',
-                url : '/deleteUser',
-                data : user,
-                dataType : 'json',
-                success : function(result) {
-                    deleteResult = result;
-                },
-                error : function(result) {
-                    layer.alert('查询用户错误');
-                }
-            });
-            layer.msg(deleteResult.message);
-            listAllUser()
-        }
-
-        function deleteProduct(id) {
-            var product = {};
-            product.productId = id;
-            var deleteResult = "";
-            $.ajax({
-                async : false,
-                type : 'POST',
-                url : '/deleteProduct',
-                data : product,
-                dataType : 'json',
-                success : function(result) {
-                    deleteResult = result;
-                },
-                error : function(result) {
-                    layer.alert('删除商品错误');
-                }
-            });
-            layer.msg(deleteResult.message);
-            listAllProduct();
-        }
-
-
-        function fileUpload() {
-            var results = "";
-            var name = document.getElementById("productName").value;
-            $.ajaxFileUpload({
-                url:'uploadFile?name='+name,
-                secureuri:false ,
-                fileElementId:'productImgUpload',
-                type:'POST',
-                dataType : 'text',
-                success: function (result){
-                    result = result.replace(/<pre.*?>/g, '');  //ajaxFileUpload会对服务器响应回来的text内容加上<pre style="....">text</pre>前后缀
-                    result = result.replace(/<PRE.*?>/g, '');
-                    result = result.replace("<PRE>", '');
-                    result = result.replace("</PRE>", '');
-                    result = result.replace("<pre>", '');
-                    result = result.replace("</pre>", '');
-                    result = JSON.parse(result);
-                    results = result.result;
-                    if(results == "success") {
-                        layer.msg("图片上传成功", {icon: 1});
-                        window.location.href = "/control";
-                        //var imgPreSee = document.getElementById("imgPreSee");
-                        //var imgSrc = '${cp}/img/'+name+'.jpg';
-                        //imgPreSee.innerHTML +='<img src="'+imgSrc+')" class="col-sm-12 col-md-12 col-lg-12"/>';
-                    }
-                    else {
-                        layer.msg("图片上传失败", {icon: 0});
-                    }
-
-                },
-                error: function ()
-                {
-                    layer.alert("上传错误");
-                }}
-            );
-        }
         /*]]>*/
-    </script>
+</script>
+</div></body>
 
-</div>
-</body>
 </html>
