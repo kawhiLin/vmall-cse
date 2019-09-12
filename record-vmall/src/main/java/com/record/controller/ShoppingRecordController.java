@@ -15,6 +15,7 @@ import com.record.utils.ArgsBean;
 import io.swagger.models.auth.In;
 import org.apache.servicecomb.provider.rest.common.RestSchema;
 import org.apache.servicecomb.provider.springmvc.reference.RestTemplateBuilder;
+import org.apache.servicecomb.swagger.invocation.exception.InvocationException;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -84,6 +85,7 @@ public class ShoppingRecordController {
 	@RequestMapping(value = "/makeFault", method = RequestMethod.POST)
 	public String makeFault() {
 		isFault = true;
+		System.out.println("make fault");
 		return null;
 	}
 
@@ -91,6 +93,7 @@ public class ShoppingRecordController {
 	@RequestMapping(value = "/stopFault", method = RequestMethod.POST)
 	public String stopFault() {
 		isFault = false;
+		System.out.println("stop fault");
 		return null;
 	}
 	// 健康检查接口
@@ -98,7 +101,12 @@ public class ShoppingRecordController {
 	public String healthCheck() {
 		if (isFault){
 			// 人为抛出异常
-			throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
+			if (isFault)   {
+				System.out.println("Throw An Error");
+//				throw new InvocationException(503, "", "Order Not Found");
+				throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
+			}
+
 		}
 		return null;
 	}
@@ -141,12 +149,23 @@ public class ShoppingRecordController {
 
 	@RequestMapping(value = "/getShoppingRecords", method = RequestMethod.POST)
 	public String getShoppingRecords(@RequestBody ArgsBean argsBean) {
-		if (isFault) throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
+		//if (isFault) throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
+//		if (isFault)   {
+//			System.out.println("Throw An Error");
+////			throw new InvocationException(503, "", "Order Not Found");
+//			throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
+//		}
+
 		Map map = (Map) JSONObject.parse(argsBean.getMapString());
 		//TODO 异常处理
 		String userId = (String)map.get("userId");
 
 		List<ShoppingRecord> shoppingRecordList = shoppingRecordService.getShoppingRecords(Integer.valueOf(userId));
+		//默认最多显示15条记录
+		if (shoppingRecordList.size()>=15){
+			shoppingRecordList =  shoppingRecordList.subList(0,15);
+		}
+
 		String shoppingRecords = JSONArray.toJSONString(shoppingRecordList);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("result", shoppingRecords);
@@ -169,7 +188,13 @@ public class ShoppingRecordController {
 
 	@RequestMapping(value = "/getAllShoppingRecords", method = RequestMethod.POST)
 	public String getAllShoppingRecords() {
-		if (isFault) throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
+		//if (isFault) throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
+		if (isFault)   {
+			System.out.println("Throw An Error");
+			// 404 无法验证容错
+			throw new InvocationException(503, "test", "Order Not Found");
+//			throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
+		}
 		List<ShoppingRecord> shoppingRecordList = shoppingRecordService.getAllShoppingRecords();
 		String shoppingRecords = JSONArray.toJSONString(shoppingRecordList);
 		Map<String, Object> resultMap = new HashMap<String, Object>();

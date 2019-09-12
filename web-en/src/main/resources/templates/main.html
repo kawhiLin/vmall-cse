@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="include/common">
+
+<body>
+<div th:fragment="content" th:remove="tag">
+    <!-- 中间内容 -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 控制栏 -->
+            <div class="col-sm-3 col-md-2 sidebar sidebar-1">
+                <ul class="nav nav-sidebar">
+                    <li class="list-group-item-diy"><h4> <a href="#productArea1">Phone <span
+                            class="sr-only">(current)</span></a></h4>
+                    </li><hr>
+                    <li class="list-group-item-diy"><h4> <a href="#productArea2">Pad</a></h4></li><hr>
+                    <li class="list-group-item-diy"><h4> <a href="#productArea3">Smart Wear</a></h4></li><hr>
+                    <li class="list-group-item-diy"><h4> <a href="#productArea4">Smart Home</a></h4></li>
+
+
+                </ul>
+            </div>
+            <!-- 控制内容 -->
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div class="jumbotron">
+                    <h1>VMALL</h1>
+                </div>
+                <div id="newArrivals">
+                </div>
+                <div name="productArea1" class="row pd-10" id="productArea1">
+                </div>
+
+                <div name="productArea2" class="row" id="productArea2">
+                </div>
+
+                <div name="productArea3" class="row" id="productArea3">
+                </div>
+
+                <div name="productArea4" class="row" id="productArea4">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var loading = layer.load(0);
+
+        var productType = new Array;
+        productType[1] = "Phone";
+        productType[2] = "Pad";
+        productType[3] = "Smart Wear";
+        productType[4] = "Smart Home";
+
+        var allProduct = getAllProducts();
+        listProducts();
+
+        // $(document).ready(function () {
+        //     listNewArrivals();
+        // });
+        //先加载基础页面，再尝试加载newArrivals页面，防止请求超时页面卡死
+        window.onload=function () {
+            listNewArrivals();
+        };
+
+        function listNewArrivals() {
+            var version = getNewArrivals();
+            var imgURL = "";
+            if (version == null) {
+                // 不展示
+                return;
+            }else if (version == "v1.0"){
+                // 展示1.0版本
+                imgURL = "/img/newArrivals-en2.jpg";
+            } else {
+                // 展示2.0版本
+                imgURL = "/img/newArrivals-en3.jpg";
+            }
+            console.log(imgURL);
+            var html = '<div class="jumbotron"><p>New Arrivals</p>';
+            html += '<img src="'+imgURL+'" style="width: 100%;height: 100%;position: relative;">'+
+                '</div>';
+            newArrivals.innerHTML += html;
+        }
+
+        function getNewArrivals(){
+            // 请求newArrivals微服务 返回version
+            var version = null;
+            //若未登陆，默认version=null 不显示该模块
+            var currentUser = /*[[${session.currentUser}]]*/ '';
+            if (currentUser == null || currentUser == undefined || currentUser == ""){
+                return null;
+            }
+
+            var data = {};
+            data.username = currentUser.name;
+            $.ajax({
+                async : false, //设置同步
+                type : 'POST',
+                url : '/getNewArrivals',
+                data : data,
+                dataType : 'json',
+                success : function(result) {
+                    if (result.version == "v1.0") {
+                        version = "v1.0"
+                        console.log("version="+version);
+                    }
+                    else if(result.version == "v2.0") {
+                        version = "v2.0";
+                        console.log("version="+version);
+                    }
+                },
+                error : function(resoult) {
+                    version = null;
+                    console.log("Timeout,version="+version);
+                }
+            });
+            return version;
+        }
+
+        function listProducts() {
+
+            var mark = new Array;
+            mark[1] = 0;
+            mark[2] = 0;
+            mark[3] = 0;
+            mark[4] = 0;
+
+            for(var i=0;i<allProduct.length;i++){
+                var html = "";
+                var imgURL = "/img/"+allProduct[i].id+".png";
+                html += '<div class="col-sm-4 col-md-4" >'+
+                    '<div class="boxes pointer" onclick="productDetail('+allProduct[i].id+')">'+
+                    '<div class="big bigimg">'+
+                    '<img src="'+imgURL+'">'+
+                    '</div>'+
+                    '<p class="product-name">'+allProduct[i].name+'</p>'+
+                    '<p class="product-price">¥'+allProduct[i].price+'</p>'+
+                    '</div>'+
+                    '</div>';
+                var id = "productArea"+allProduct[i].type;
+                var productArea = document.getElementById(id);
+                if(mark[allProduct[i].type] == 0){
+                    html ='<hr/><h1>'+productType[allProduct[i].type]+'</h1><hr/>'+html;
+                    mark[allProduct[i].type] = 1;
+                }
+                productArea.innerHTML += html;
+            }
+            layer.close(loading);
+        }
+        function getAllProducts() {
+            var allProducts = null;
+            var nothing = {};
+            $.ajax({
+                async : false, //设置同步
+                type : 'POST',
+                url : '/getAllProducts',
+                data : nothing,
+                dataType : 'json',
+                success : function(result) {
+                    if (result!=null) {
+                        allProducts = result.allProducts;
+                    }
+                    else{
+                        layer.alert('Search Error');
+                    }
+                },
+                error : function(resoult) {
+                    layer.alert('Search Error');
+                }
+            });
+            //划重点划重点，这里的eval方法不同于prase方法，外面加括号
+            allProducts = eval("("+allProducts+")");
+            return allProducts;
+        }
+
+        function productDetail(id) {
+
+            var currentUser = /*[[${session.currentUser}]]*/ '';
+            if (currentUser == null || currentUser == undefined || currentUser == "") {
+                layer.confirm('Please log in first', {icon: 2, title:'Tips',btn:['Login','Later']},
+                    function(){
+                        window.location.href = "/login";
+                    },
+                    function(index){
+                        layer.close(index);}
+                );
+                return;
+            }
+
+
+            var product = {};
+            var jumpResult = '';
+            //product.id = id;
+            product.productId = id;
+            $.ajax({
+                async : false, //设置同步
+                type : 'POST',
+                url : '/productDetail',
+                data : product,
+                dataType : 'json',
+                success : function(result) {
+                    jumpResult = result.result;
+                },
+                error : function(resoult) {
+                    layer.alert('Search Error');
+                }
+            });
+
+            if(jumpResult == "success"){
+                window.location.href = "/product_detail";
+            }
+        }
+
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>

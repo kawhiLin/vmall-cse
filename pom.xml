@@ -33,6 +33,7 @@
         <module>evaluation-vmall</module>
         <module>newArrivals</module>
         <module>newArrivals2</module>
+        <module>web-en</module>
     </modules>
 
     <dependencyManagement>

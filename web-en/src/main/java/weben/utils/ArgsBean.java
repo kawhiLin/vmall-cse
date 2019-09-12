@@ -1,4 +1,4 @@
-package com.shoppingcar2.utils;
+package weben.utils;
 
 public class ArgsBean {
     String mapString;

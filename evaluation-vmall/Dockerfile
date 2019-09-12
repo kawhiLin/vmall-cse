@@ -1,5 +1,4 @@
-FROM cse-jre:8u111
-
+FROM 192.168.69.130:20202/vmall/cse-huawei-jre:8u201
 WORKDIR /home/apps/
 
 ENV JRE_HOME=$JAVA_HOME

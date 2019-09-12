@@ -28,6 +28,8 @@ import org.springframework.web.client.RestTemplate;
 public class RecordController {
 
     private static RestTemplate restTemplate = RestTemplateBuilder.create();
+    private static RestTemplate restTemplate_http = new RestTemplate();
+
     private String makeFault_instanceIP = null;
 
     private boolean isTestingTPS = false;
@@ -49,13 +51,17 @@ public class RecordController {
         String url = "http://"+instanceIP+":8084/order/makeFault";
         System.out.println("makeFault:"+url);
         try{
-            restTemplate.postForObject(url,null,String.class);
             this.makeFault_instanceIP = instanceIP;
+            restTemplate_http.postForObject(url,null,String.class);
+
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            Map<String,Object> res = new HashMap<String,Object>();
+            res.put("result","failed");
+            System.out.println("makeFault failed, request error");
+            return res;
         }
-
+        System.out.println("makeFault success");
         Map<String,Object> res = new HashMap<String,Object>();
         res.put("result","success");
         return res;
@@ -74,10 +80,11 @@ public class RecordController {
         String url = "http://"+this.makeFault_instanceIP+":8084/order/stopFault";
         System.out.println("stopFault:"+url);
         try{
-            restTemplate.postForObject(url,null,String.class);
+            restTemplate_http.postForObject(url,null,String.class);
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            res.put("result","requst error");
+            return res;
         }
 
         res.put("result","success");

@@ -1,0 +1,64 @@
+APPLICATION_ID: VMALL
+service_description:
+  # environment: development  # 声明是开发环境，避免schema修改之后需要改版本
+  name: web-en
+  version: 1.0.0
+  properties:
+    allowCrossApp: false
+cse:
+  service:
+    registry:
+      address: https://192.168.68.130:31100
+      instance:
+        watch: false
+  config:
+    client:
+      serverUri: https://192.168.68.130:31103
+      refreshMode: 1
+      refresh_interval: 5000
+  monitor:
+    client:
+      serverUri: https://192.168.68.130:31109
+      # 6.5.x 新配置
+      enable: true
+      #cse:
+      ##  service:
+      ##    registry:
+      ##      address: http://127.0.0.1:30100
+      ##      instance:
+      ##        watch: false
+      ##  config:
+      ##    client:
+      ##      serverUri: http://127.0.0.1:30103
+      ##      refreshMode: 1
+      ##      refresh_interval: 5000
+      ##  monitor:
+      ##    client:
+      ##      serverUri: http://127.0.0.1:30109
+    ##      # 6.5.x 新配置
+    ##      enable: true
+  rest:
+    address: 0.0.0.0:8080
+  #When a local project is deployed as a container outside a cluster, you need to delete all monitor and credentials comments and configure the AK/SK.
+  credentials:
+    accessKey: KE3U3EFCV7Y0S91CESFT
+    secretKey: p0Nc6vmlSpnCEa5h0Fc41FdMrpMirAiM6Jf64ju9
+    akskCustomCipher: default
+    project: project-apig
+
+
+  loadbalance:
+    retryEnabled: false   # 默认关闭 容错
+    isolation:
+      enabled: false   # 默认关闭 实例隔离
+
+  handler:
+    chain:
+      Consumer:
+        default: loadbalance, qps-flowcontrol-consumer, bizkeeper-consumer, fault-injection-consumer
+      Provider:
+        default: bizkeeper-provider, qps-flowcontrol-provider
+servicecomb:
+  rest:
+    servlet:
+      urlPattern: /servicecomb/rest/*

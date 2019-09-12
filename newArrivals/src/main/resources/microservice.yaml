@@ -32,8 +32,6 @@ cse:
   handler:
     chain:
       Consumer:
-        default: qps-flowcontrol-consumer,loadbalance,bizkeeper-consumer
+        default: loadbalance, qps-flowcontrol-consumer, bizkeeper-consumer, fault-injection-consumer
       Provider:
-        default: qps-flowcontrol-provider,bizkeeper-provider
-
-
+        default: bizkeeper-provider, qps-flowcontrol-provider

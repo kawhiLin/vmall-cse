@@ -129,21 +129,24 @@
                 url : '/makeFault',
                 data : data,
                 dataType : 'json',
-                success : function() {
+                success : function(result) {
                     div = document.getElementById("instanceStatus");
                     div.setAttribute("style","position: absolute; left: 75%; top: 58%;");
                     layer.msg('成功模拟故障', {icon: 1, time: 1000});
-                    layer.close(loadings)
+                    layer.close(loadings);
+                    console.log(result.result);
                 },
-                error : function() {
+                error : function(result) {
                     layer.alert('请求超时，请检查实例IP是否正确');
-                    layer.close(loadings)
+                    layer.close(loadings);
+                    console.log(result.result);
                 }
             });
         }
 
         // 故障恢复
         function stopFault() {
+            var loadings = layer.load(0);
             var data = {};
             $.ajax({
                 async : true,   //异步执行（timeout才生效）
@@ -153,20 +156,33 @@
                 data : data,
                 dataType : 'json',
                 success : function(res) {
-                    if(res.result=="success"){
-                        div = document.getElementById("instanceStatus");
-                        div.setAttribute("style","display:none;");
-                        layer.msg('故障消除', {icon: 1, time: 1000});
-                        layer.close(loadings)
-                    }else {
-                        layer.alert('请求超时，请检查实例IP是否正确');
-                        layer.close(loadings)
-                    }
+                    div = document.getElementById("instanceStatus");
+                    div.setAttribute("style","display:none;");
+                    layer.msg('故障消除', {icon: 1, time: 1000});
+                    layer.close(loadings);
+                    console.log("故障消除"+res.result);
                 },
                 error : function() {
                     layer.alert('请求超时，请检查实例IP是否正确');
                     layer.close(loadings)
                 }
+                // success : function(res) {
+                //     if(res.result=="success"){
+                //         div = document.getElementById("instanceStatus");
+                //         div.setAttribute("style","display:none;");
+                //         layer.msg('故障消除', {icon: 1, time: 1000});
+                //         layer.close(loadings);
+                //         console.log("故障消除");
+                //     }else {
+                //         layer.alert('请求超时，请检查实例IP是否正确');
+                //         layer.close(loadings);
+                //         console.log(res.result);
+                //     }
+                // },
+                // error : function() {
+                //     layer.alert('请求超时，请检查实例IP是否正确');
+                //     layer.close(loadings)
+                // }
             });
         }
 

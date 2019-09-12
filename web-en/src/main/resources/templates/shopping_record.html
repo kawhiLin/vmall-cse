@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="include/common">
+
+<body>
+<div th:fragment="content" th:remove="tag">
+
+    <div class="container-fluid bigHead">
+        <div class="row">
+            <div class="col-sm-10  col-md-10 col-sm-offset-1 col-md-offset-1">
+                <div class="jumbotron">
+                    <h1>Ordering Page</h1>
+                    <p>Your Oder Lists</p>
+                </div>
+            </div>
+            <div class="col-sm-10  col-md-10 col-sm-offset-1 col-md-offset-1">
+                <div class="row">
+                    <ul class="nav nav-tabs list-group-diy" role="tablist">
+                        <li role="presentation" class="active list-group-item-diy"><a href="#unHandle" aria-controls="unHandle" role="tab" data-toggle="tab">Pending&nbsp;<span class="badge" id="unHandleCount">0</span></a></li>
+                        <li role="presentation" class="list-group-item-diy"><a href="#transport" aria-controls="transport" role="tab" data-toggle="tab">Delivering&nbsp;<span class="badge" id="transportCount">0</span></a></li>
+                        <li role="presentation" class="list-group-item-diy"><a href="#receive" aria-controls="receive" role="tab" data-toggle="tab">Received&nbsp;<span class="badge" id="receiveCount">0</span></a></li>
+                        <li role="presentation" class="list-group-item-diy"><a href="#all" aria-controls="all" role="tab" data-toggle="tab">All&nbsp;<span class="badge" id="allCount">0</span></a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="unHandle">
+                            <table class="table table-hover center" id="unHandleTable">
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="transport">
+                            <table class="table table-hover center" id="transportTable">
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="receive">
+                            <table class="table table-hover center" id="receiveTable">
+                            </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="all">
+                            <table class="table table-hover center" id="allTable">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var loading = layer.load(0);
+        var currentUser = /*[[${session.currentUser}]]*/ '';
+        updateShoppingRecords();
+
+        function updateShoppingRecords() {
+            var orderArray = new Array;
+            orderArray[0] = "Not Delivered";
+            orderArray[1] = "Delivering";
+            orderArray[2] = "Received";
+            var unHandleTable = document.getElementById("unHandleTable");
+            var transportTable = document.getElementById("transportTable");
+            var receiveTable = document.getElementById("receiveTable");
+            var allTable = document.getElementById("allTable");
+
+            var unHandleCount = document.getElementById("unHandleCount");
+            var transportCount = document.getElementById("transportCount");
+            var receiveCount = document.getElementById("receiveCount");
+            var allCount = document.getElementById("allCount");
+
+            var unHandleCounts = parseInt(unHandleCount.innerHTML);
+            var transportCounts = parseInt(transportCount.innerHTML);
+            var receiveCounts = parseInt(receiveCount.innerHTML);
+            var allCounts = parseInt(allCount.innerHTML);
+
+            var allShoppingRecords = getShoppingRecords();
+            unHandleTable.innerHTML = "";
+            transportTable.innerHTML = "";
+            receiveTable.innerHTML = "";
+            allTable.innerHTML = "";
+            var unHandleHTML = '<tr>'+
+                '<th>Product Name</th>'+
+                '<th>Count</th>'+
+                '<th>Total Amount</th>'+
+                '<th>Order Status</th>'+
+                '</tr>';
+            var transportHTML = '<tr>'+
+                '<th>Product Name</th>'+
+                '<th>Count</th>'+
+                '<th>Total Amount</th>'+
+                '<th>Address</th>'+
+                '<th>Phone</th>'+
+                '<th>Order Status</th>'+
+                '<th>Confirm Receipt</th>'+
+                '</tr>';
+            var receiveHTML = '<tr>'+
+                '<th>Product Name</th>'+
+                '<th>Count</th>'+
+                '<th>Total Amount</th>'+
+                '<th>Order Status</th>'+
+                '<th>Evaluate</th>'+
+                '</tr>';
+            var allHTML = '<tr>'+
+                '<th>Product Name</th>'+
+                '<th>Count</th>'+
+                '<th>Total Amount</th>'+
+                '<th>Order Status</th>'+
+                '</tr>';
+            var unHandleHTMLTemp = "";
+            var transportHTMLTemp = "";
+            var receiveHTMLTemp = "";
+            var allHTMLTemp = "";
+
+            for(var i=0;i<allShoppingRecords.length;i++){
+                var product = getProductById(allShoppingRecords[i].productId);
+                allHTMLTemp += '<tr>'+
+                    '<td>'+product.name+'</td>'+
+                    '<td>'+allShoppingRecords[i].counts+'</td>'+
+                    '<td>'+allShoppingRecords[i].productPrice+'</td>'+
+                    '<td>'+orderArray[allShoppingRecords[i].orderStatus]+'</td>'+
+                    '</tr>';
+                allCounts++;
+                if(allShoppingRecords[i].orderStatus == 0){
+                    unHandleHTMLTemp+= '<tr>'+
+                        '<td>'+product.name+'</td>'+
+                        '<td>'+allShoppingRecords[i].counts+'</td>'+
+                        '<td>'+allShoppingRecords[i].productPrice+'</td>'+
+                        '<td>'+orderArray[allShoppingRecords[i].orderStatus]+'</td>'+
+                        '</tr>';
+                    unHandleCounts++;
+                }
+                else if(allShoppingRecords[i].orderStatus ==1){
+                    var address = getUserAddress(allShoppingRecords[i].userId);
+                    var phoneNumber = getUserPhoneNumber(allShoppingRecords[i].userId)
+                    transportHTMLTemp+= '<tr>'+
+                        '<td>'+product.name+'</td>'+
+                        '<td>'+allShoppingRecords[i].counts+'</td>'+
+                        '<td>'+allShoppingRecords[i].productPrice+'</td>'+
+                        '<td>'+address+'</td>'+
+                        '<td>'+phoneNumber+'</td>'+
+                        '<td>'+orderArray[allShoppingRecords[i].orderStatus]+'</td>'+
+                        '<td>'+
+                        '<button class="btn btn-primary btn-sm" onclick="receiveProducts('+allShoppingRecords[i].userId+','+allShoppingRecords[i].productId+',\''+allShoppingRecords[i].time+'\')">Confirm receipt</button>'+
+                        '</td>'+
+                        '</tr>';
+                    transportCounts++;
+                }
+                else if(allShoppingRecords[i].orderStatus ==2){
+                    receiveHTMLTemp += '<tr>'+
+                        '<td>'+product.name+'</td>'+
+                        '<td>'+allShoppingRecords[i].counts+'</td>'+
+                        '<td>'+allShoppingRecords[i].productPrice+'</td>'+
+                        '<td>'+orderArray[allShoppingRecords[i].orderStatus]+'</td>'+
+                        '<td>'+
+                        '<button class="btn btn-primary btn-sm" onclick="productDetail('+allShoppingRecords[i].productId+')">Evaluation</button>'+
+                        '</td>'+
+                        '</tr>';
+                    receiveCounts++;
+                }
+            }
+            if(unHandleHTMLTemp == ""){
+                unHandleHTML='<div class="row">'+
+                    '<div class="col-sm-3 col-md-3 col-lg-3"></div> '+
+                    '<div class="col-sm-6 col-md-6 col-lg-6">'+
+                    '<h2>No related orders</h2>'+
+                    '</div>'+
+                    '</div>';
+            }
+            else
+                unHandleHTML+=unHandleHTMLTemp;
+            if(transportHTMLTemp == ""){
+                transportHTML = '<div class="row">'+
+                    '<div class="col-sm-3 col-md-3 col-lg-3"></div> '+
+                    '<div class="col-sm-6 col-md-6 col-lg-6">'+
+                    '<h2>No related orders</h2>'+
+                    '</div>'+
+                    '</div>';
+            }
+            else
+                transportHTML+=transportHTMLTemp;
+            if(receiveHTMLTemp == ""){
+                receiveHTML = '<div class="row">'+
+                    '<div class="col-sm-3 col-md-3 col-lg-3"></div> '+
+                    '<div class="col-sm-6 col-md-6 col-lg-6">'+
+                    '<h2>No related orders</h2>'+
+                    '</div>'+
+                    '</div>';
+            }
+            else
+                receiveHTML+=receiveHTMLTemp;
+            if(allHTMLTemp == ""){
+                allHTML = '<div class="row">'+
+                    '<div class="col-sm-3 col-md-3 col-lg-3"></div> '+
+                    '<div class="col-sm-6 col-md-6 col-lg-6">'+
+                    '<h2>No related orders</h2>'+
+                    '</div>'+
+                    '</div>';
+            }
+            else
+                allHTML+=allHTMLTemp;
+
+            unHandleCount.innerHTML = unHandleCounts;
+            transportCount.innerHTML = transportCounts;
+            receiveCount.innerHTML = receiveCounts;
+            allCount.innerHTML = allCounts;
+
+            unHandleTable.innerHTML += unHandleHTML;
+            transportTable.innerHTML += transportHTML;
+            receiveTable.innerHTML += receiveHTML;
+            allTable.innerHTML += allHTML;
+            layer.close(loading);
+        }
+
+        function getShoppingRecords() {
+            judgeIsLogin();
+            var shoppingRecordProducts = "";
+            var user = {};
+            user.userId = currentUser.id;
+            $.ajax({
+                async : false, //设置同步
+                type : 'POST',
+                url : '/getShoppingRecords',
+                data : user,
+                dataType : 'json',
+                success : function(result) {
+                    shoppingRecordProducts = result.result;
+                    return;
+                },
+                error : function(result) {
+                    layer.alert('Search Error');
+                    layer.close(loading);
+                }
+            });
+            shoppingRecordProducts = eval("("+shoppingRecordProducts+")");
+            return shoppingRecordProducts;
+        }
+
+        function getProductById(id) {
+            var productResult = "";
+            var product = {};
+            product.productId = id;
+            $.ajax({
+                async : false, //设置同步
+                type : 'POST',
+                url : '/getProductById',
+                data : product,
+                dataType : 'json',
+                success : function(result) {
+                    productResult = result.result;
+                },
+                error : function(result) {
+                    layer.alert('Search Error');
+                }
+            });
+            productResult = JSON.parse(productResult);
+            return productResult;
+        }
+
+        function getUserAddress(id) {
+            var address = "";
+            var user = {};
+            user.id = id;
+            $.ajax({
+                async : false, //设置同步
+                type : 'POST',
+                url : '/getUserAddressAndPhoneNumber',
+                data : user,
+                dataType : 'json',
+                success : function(result) {
+                    address = result.address;
+                },
+                error : function(result) {
+                    layer.alert('Search Error');
+                }
+            });
+            return address;
+        }
+
+        function getUserPhoneNumber(id) {
+            var phoneNumber = "";
+            var user = {};
+            user.id = id;
+            $.ajax({
+                async : false, //设置同步
+                type : 'POST',
+                url : '/getUserAddressAndPhoneNumber',
+                data : user,
+                dataType : 'json',
+                success : function(result) {
+                    phoneNumber = result.phoneNumber;
+                },
+                error : function(result) {
+                    layer.alert('Search Error');
+                }
+            });
+            return phoneNumber;
+        }
+
+        function judgeIsLogin() {
+            if(currentUser == null || currentUser.id == null || currentUser.id == undefined || currentUser.id ==""){
+                window.location.href = "/login";
+            }
+        }
+        function receiveProducts(userId,productId,time) {
+            var receiveResult = "";
+            var shoppingRecord = {};
+            shoppingRecord.userId = userId;
+            shoppingRecord.productId = productId;
+            shoppingRecord.time = time;
+            shoppingRecord.orderStatus = 2;
+            $.ajax({
+                async : false, //设置同步
+                type : 'POST',
+                url : '/changeShoppingRecord',
+                data : shoppingRecord,
+                dataType : 'json',
+                success : function(result) {
+                    receiveResult = result.result;
+                },
+                error : function(result) {
+                    layer.alert('Search Error');
+                }
+            });
+            if(receiveResult = "success")
+                window.location.href = "/shopping_record";
+        }
+
+        function productDetail(id) {
+            var product = {};
+            var jumpResult = '';
+            product.productId = id;
+            $.ajax({
+                async : false, //设置同步
+                type : 'POST',
+                url : '/productDetail',
+                data : product,
+                dataType : 'json',
+                success : function(result) {
+                    jumpResult = result.result;
+                },
+                error : function(resoult) {
+                    layer.alert('Search Error');
+                }
+            });
+
+            if(jumpResult == "success"){
+                window.location.href = "/product_detail";
+            }
+        }
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>

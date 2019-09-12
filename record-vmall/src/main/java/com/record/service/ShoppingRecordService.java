@@ -122,7 +122,10 @@ public class ShoppingRecordService {
     public List<ShoppingRecord> getAllShoppingRecords(){
         Iterator<ShoppingRecord> it = recordRepository.findAll().iterator();
         List<ShoppingRecord> list = new ArrayList<>();
+
         while (it.hasNext()){
+            // 默认最多显示15条订单
+            if (list.size()>=15)break;
             list.add(it.next());
         }
         return list;
