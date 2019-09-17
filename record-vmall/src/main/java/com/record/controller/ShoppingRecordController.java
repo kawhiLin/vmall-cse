@@ -102,7 +102,7 @@ public class ShoppingRecordController {
 		if (isFault){
 			// 人为抛出异常
 			if (isFault)   {
-				System.out.println("Throw An Error");
+				System.out.println("[ERROR]Server error message is: Order Not Found");
 //				throw new InvocationException(503, "", "Order Not Found");
 				throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
 			}
@@ -148,13 +148,15 @@ public class ShoppingRecordController {
 	}
 
 	@RequestMapping(value = "/getShoppingRecords", method = RequestMethod.POST)
-	public String getShoppingRecords(@RequestBody ArgsBean argsBean) {
+	public String getShoppingRecords(@RequestBody ArgsBean argsBean) throws InterruptedException {
 		//if (isFault) throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
-//		if (isFault)   {
-//			System.out.println("Throw An Error");
-////			throw new InvocationException(503, "", "Order Not Found");
-//			throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
-//		}
+		if (isFault)   {
+			System.out.println("[ERROR]Server error message is: Order Not Found");
+			//Thread.sleep(1000);
+			// 490 for 熔断  503 for 容错
+			throw new InvocationException(503, "", "Order Not Found");
+			//throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
+		}
 
 		Map map = (Map) JSONObject.parse(argsBean.getMapString());
 		//TODO 异常处理
@@ -187,12 +189,14 @@ public class ShoppingRecordController {
 	}
 
 	@RequestMapping(value = "/getAllShoppingRecords", method = RequestMethod.POST)
-	public String getAllShoppingRecords() {
+	public String getAllShoppingRecords() throws InterruptedException {
 		//if (isFault) throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
 		if (isFault)   {
-			System.out.println("Throw An Error");
+			System.out.println("[ERROR]Server error message is: Order Not Found");
 			// 404 无法验证容错
-			throw new InvocationException(503, "test", "Order Not Found");
+//			Thread.sleep(1000);
+			// 490 for 熔断  503 for 容错
+			throw new InvocationException(490, "", "Order Not Found");
 //			throw new RuntimeException("[ERROR]Server error message is [{\"message\":\"Order Not Found\"}].");
 		}
 		List<ShoppingRecord> shoppingRecordList = shoppingRecordService.getAllShoppingRecords();

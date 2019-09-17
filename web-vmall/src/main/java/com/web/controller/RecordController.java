@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.web.utils.ArgsBean;
 
 import org.apache.servicecomb.provider.springmvc.reference.RestTemplateBuilder;
+import org.apache.servicecomb.swagger.invocation.exception.InvocationException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -207,7 +208,14 @@ public class RecordController {
 
         ArgsBean argsBean = new ArgsBean();
         argsBean.setMapString(JSONObject.toJSONString(map));
-        String res = restTemplate.postForObject(url,argsBean,String.class);
+        String res = null;
+        try{
+            res = restTemplate.postForObject(url,argsBean,String.class);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+//            throw new InvocationException(590, "", "getAllShoppingRecords faild");
+        }
 
         System.out.println("----res:\n"+res);
         Map resultMap = (Map)JSON.parse(res);

@@ -1,7 +1,7 @@
 APPLICATION_ID: VMALL
 service_description:
   # environment: development  # 声明是开发环境，避免schema修改之后需要改版本
-  name: web-en
+  name: web
   version: 1.0.0
   properties:
     allowCrossApp: false
@@ -46,18 +46,43 @@ cse:
     akskCustomCipher: default
     project: project-apig
 
-
-  loadbalance:
-    retryEnabled: false   # 默认关闭 容错
-    isolation:
-      enabled: false   # 默认关闭 实例隔离
-
   handler:
     chain:
       Consumer:
         default: loadbalance, qps-flowcontrol-consumer, bizkeeper-consumer, fault-injection-consumer
       Provider:
         default: bizkeeper-provider, qps-flowcontrol-provider
+
+  loadbalance:
+    retryEnabled: false   # 默认关闭 容错
+    isolation:
+      enabled: false   # 默认关闭 实例隔离
+
+  # 设置超时隔离
+  isolation:
+    Consumer:
+      timeout:
+        enabled: true
+      timeoutInMilliseconds: 30000
+
+  #   设置熔断
+  #  circuitBreaker:
+  #    Consumer:
+  #      enabled: true
+  #      sleepWindowInMilliseconds: 15000
+  #      requestVolumeTreshold: 4
+  #      errorThresholdPercentage: 10
+  #
+  # fallback
+  fallback:
+    Consumer:
+      enabled: true
+  fallbackpolicy:
+    Consumer:
+      policy: throwexception
+
+
+
 servicecomb:
   rest:
     servlet:

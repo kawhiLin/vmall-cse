@@ -8,17 +8,17 @@ service_description:
 cse:
   service:
     registry:
-      address: http://127.0.0.1:30100
+      address: https://192.168.68.130:31100
       instance:
         watch: false
   config:
     client:
-      serverUri: http://127.0.0.1:30103
+      serverUri: https://192.168.68.130:31103
       refreshMode: 1
       refresh_interval: 5000
   monitor:
     client:
-      serverUri: http://127.0.0.1:30109
+      serverUri: https://192.168.68.130:31109
       # 6.5.x 新配置
       enable: true
   rest:

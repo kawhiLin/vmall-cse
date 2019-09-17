@@ -55,7 +55,7 @@ public class PagesController {
 
     public PagesController() {
 //        已有单独的Pod去初始化
-          InitDB.connmysql();
+          //InitDB.connmysql();
 //        System.out.println("数据库初始化");
         this.userUrl = "cse://user/user";
         this.productUrl = "cse://product/product";

@@ -1,5 +1,5 @@
 use shopping;
-INSERT INTO `products` VALUES (1, 'Mate20 RS', 'HUAWEI Mate 20 RS 保时捷设计', 'Mate;20;手机;RS', 12999, 1000, 1);
+INSERT INTO `products` VALUES (1, 'Mate20 RS', 'HUAWEI Mate 20 RS 保时捷设计', 'Mate;20;手机;RS', 12999, 1000000, 1);
 INSERT INTO `products` VALUES (2, 'Mate20 X', 'HUAWEI Mate 20 X 6GB+128GB 全网通版（宝石蓝）', 'Mate;20;手机;X', 4999, 1000, 1);
 INSERT INTO `products` VALUES (3, 'Magic2 ', '荣耀Magic2 移动4G+ 8GB+128GB 渐变蓝', 'Magic;2;手机', 4299, 100, 1);
 INSERT INTO `products` VALUES (4, 'MateBook 13', 'HUAWEI MateBook 13 全面屏轻薄性能本 皓月银 i7 8GB 512GB 独显', 'MatebBook;笔记本', 6399, 98, 2);

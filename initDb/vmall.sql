@@ -80,7 +80,6 @@ CREATE TABLE `user_detail`  (
 
 
 INSERT INTO `user_detail` VALUES (1, 'admin', '', 0, '', '', '', '2019-02-20 11:18:54');
-INSERT INTO `user_detail` VALUES (2, 'user01', '', 0, '', '', '', '2019-02-20 11:19:25');
 
 
 DROP TABLE IF EXISTS `user_main`;
@@ -96,6 +95,5 @@ CREATE TABLE `user_main`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 INSERT INTO `user_main` VALUES (1, 'admin', 'admin', '管理员', 1);
-INSERT INTO `user_main` VALUES (2, 'user01', 'user01', '用户1', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
