@@ -17,7 +17,7 @@
 
 <!--导航栏部分-->
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
+    <div class="container-fluid" style="background: currentColor;position: relative;height: 50px;">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -27,7 +27,7 @@
                 <span class="icon-bar"></span>
             </button>
             <div onclick="window.location.href = '/main'">
-                <img src="/img/logo.png" style="width: 85%;">
+                <img src="/img/logo.png" style="width: 130px;height: 50px;">
             </div>
 
             <!--<a class="navbar-brand" href="/main">VMALL 首页</a>-->
@@ -35,24 +35,28 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li th:unless="${session.currentUser}"><a href="/register" methods="post">注册</a></li>
-                <li th:unless="${session.currentUser}"><a href="/login" methods="post">登录</a></li>
+                <li th:unless="${session.currentUser}"><a style="color: white;" href="/register" methods="post">注册</a></li>
+                <li th:unless="${session.currentUser}"><a style="color: white;" href="/login" methods="post">登录</a></li>
 
                 <div th:if="${session.currentUser}" class="nav navbar-nav navbar-right">
 
-                    <li th:if="${session.currentUser.role == 1}"><a href="/control" methods="post">控制台</a></li>
+                    <li th:if="${session.currentUser.role == 1}"><a style="color: white;" href="/control" methods="post">控制台</a></li>
                     <!--<li th:if="${session.currentUser.role == 1}"><a href="/resetDb" methods="post">重置数据库</a></li>-->
 
                     <li class="dropdown">
                         <div href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-haspopup="true" aria-expanded="false" style=" top: 10px; position: relative; ">
-                            <img src="/img/user.png" style="width: 20%;">
-                            <a style=" color: gray; "th:text="${session.currentUser.nickName}"> </a>
+                             aria-haspopup="true" aria-expanded="false" style="top: 5px;position: relative;width: 120px;">
+                            <svg class="febs-Zp9RA4Nayd febs-15zi1JxpAq" width="25" height="25" viewBox="0 0 16 16" style=" top: 6px; position: relative; ">
+                                <path d="M8 2c1.216 0 2.206 1.12 2.206 2.497S9.216 6.994 8 6.994c-1.217 0-2.207-1.12-2.207-2.497S6.783 2 8 2m2.137 7.981c1.366 0 2.563 1.322 2.563 2.829V14H3.3v-1.189c0-1.507 1.197-2.829 2.563-2.829h4.274M8 1C6.229 1 4.793 2.565 4.793 4.497S6.229 7.994 8 7.994s3.206-1.565 3.206-3.497S9.771 1 8 1zm2.137 7.981H5.862c-1.96 0-3.563 1.792-3.563 3.829V15h11.4v-2.189c.001-2.038-1.602-3.83-3.562-3.83z" style=" fill: white; ">
+                                </path>
+                            </svg>
+                            <!--<img src="/img/user.png" style="width: 20%;">-->
+                            <a style="color: white;" th:text="${session.currentUser.nickName}"> </a>
                         </div>
                         <ul class="dropdown-menu">
                             <li><a href="/shopping_car">购物车</a></li>
                             <li><a href="/shopping_record">订单状态</a></li>
-                            <li th:if="${session.currentUser.role == 1}"><a href="/shopping_handle">处理订单</a></li>
+                            <li th:if="${session.currentUser.role == 1}"><a href="/shopping_handle">订单处理</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/amend_info">个人资料修改</a></li>
                             <li><a href="/doLogout">注销登录</a></li>
@@ -62,9 +66,9 @@
             </ul>
             <div class="navbar-form navbar-right">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Mate20" id="searchKeyWord"/>
+                    <input type="text" class="form-control" style= " background-color:transparent;border:1;color: white;"  placeholder="Mate20" id="searchKeyWord"/>
                 </div>
-                <button class="btn btn-default" onclick="searchProduct();">查找商品</button>
+                <button class="btn" onclick="searchProduct();">搜索</button>
             </div>
         </div>
     </div>

@@ -28,8 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestSchema(schemaId = "shoppingcar")
-@RequestMapping(path = "/shoppingcar", produces = MediaType.APPLICATION_JSON)
+@RestSchema(schemaId = "shoppingcart")
+@RequestMapping(path = "/shoppingcart", produces = MediaType.APPLICATION_JSON)
 @EnableAutoConfiguration
 public class ShoppingCarController {
 
@@ -47,7 +47,7 @@ public class ShoppingCarController {
     public ShoppingCarController() {
         this.userUrl = "cse://use/user";
         this.productUrl = "cse://product/product";
-        this.shoppingcarUrl = "cse://shoppingcar/shoppingcar";
+        this.shoppingcarUrl = "cse://shoppingcart/shoppingcart";
         this.recordUrl = "cse://order/order";
         this.evaluationUrl = "cse://evaluation/evaluation";
         System.out.println("url初始化：\n" + userUrl + "\n" + productUrl + "\n" + shoppingcarUrl + "\n" + recordUrl + "\n"+ evaluationUrl);

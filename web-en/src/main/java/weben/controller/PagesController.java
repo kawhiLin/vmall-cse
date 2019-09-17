@@ -57,7 +57,7 @@ public class PagesController {
 //        System.out.println("数据库初始化");
         this.userUrl = "cse://user/user";
         this.productUrl = "cse://product/product";
-        this.shoppingcarUrl = "cse://shoppingcar/shoppingcar";
+        this.shoppingcarUrl = "cse://shoppingcart/shoppingcart";
         this.recordUrl = "cse://order/order";
         this.evaluationUrl = "cse://evaluation/evaluation";
         this.newArrivalsUrl = "cse://newArrivals/newArrivals";

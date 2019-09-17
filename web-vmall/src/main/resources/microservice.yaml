@@ -49,9 +49,9 @@ cse:
   handler:
     chain:
       Consumer:
-        default: loadbalance, qps-flowcontrol-consumer, bizkeeper-consumer, fault-injection-consumer
+        default: loadbalance, qps-flowcontrol-consumer, bizkeeper-consumer, fault-injection-consumer,, auth-consumer
       Provider:
-        default: bizkeeper-provider, qps-flowcontrol-provider
+        default: bizkeeper-provider, qps-flowcontrol-provider, auth-provider
 
   loadbalance:
     retryEnabled: false   # 默认关闭 容错

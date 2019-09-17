@@ -45,7 +45,7 @@ public class EvaluationController {
     public EvaluationController() {
         this.userUrl = "cse://use/user";
         this.productUrl = "cse://product/product";
-        this.shoppingcarUrl = "cse://shoppingcar/shoppingcar";
+        this.shoppingcarUrl = "cse://shoppingcart/shoppingcart";
         this.recordUrl = "cse://order/order";
         this.evaluationUrl = "cse://evaluation/evaluation";
 		System.out.println("url初始化：\n"+userUrl+"\n"+productUrl+"\n"+shoppingcarUrl+"\n"+recordUrl);

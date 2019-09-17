@@ -1,7 +1,7 @@
 APPLICATION_ID: VMALL
 service_description:
   # environment: development  # 声明是开发环境，避免schema修改之后需要改版本
-  name: shoppingcar
+  name: shoppingcart
   version: 1.0.0
   properties:
     allowCrossApp: false
@@ -49,9 +49,9 @@ cse:
   handler:
     chain:
       Consumer:
-        default: loadbalance, qps-flowcontrol-consumer, bizkeeper-consumer, fault-injection-consumer
+        default: loadbalance, qps-flowcontrol-consumer, bizkeeper-consumer, fault-injection-consumer,, auth-consumer
       Provider:
-        default: bizkeeper-provider, qps-flowcontrol-provider
+        default: bizkeeper-provider, qps-flowcontrol-provider, auth-provider
 #servicecomb:
 #  rest:
 #    servlet:

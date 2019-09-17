@@ -41,9 +41,9 @@ public class ProductController extends HttpServlet {
     public static String evaluationUrl;
 
     public ProductController() {
-        this.userUrl = "cse://user/user";
+        this.userUrl = "cse://use/user";
         this.productUrl = "cse://product/product";
-        this.shoppingcarUrl = "cse://shoppingcar/shoppingcar";
+        this.shoppingcarUrl = "cse://shoppingcart/shoppingcart";
         this.recordUrl = "cse://order/order";
         this.evaluationUrl = "cse://evaluation/evaluation";
         System.out.println("url初始化：\n" + userUrl + "\n" + productUrl + "\n" + shoppingcarUrl + "\n" + recordUrl + "\n"+ evaluationUrl);
