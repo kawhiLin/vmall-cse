@@ -49,9 +49,9 @@ cse:
   handler:
     chain:
       Consumer:
-        default: loadbalance, qps-flowcontrol-consumer, bizkeeper-consumer, fault-injection-consumer,, auth-consumer
+        default: loadbalance, qps-flowcontrol-consumer, bizkeeper-consumer, fault-injection-consumer
       Provider:
-        default: bizkeeper-provider, qps-flowcontrol-provider, auth-provider
+        default: bizkeeper-provider, qps-flowcontrol-provider
 #servicecomb:
 #  rest:
 #    servlet:
