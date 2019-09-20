@@ -15,7 +15,7 @@ print(host, port)
 while 1:
     # 打开数据库连接
     try:
-        db = pymysql.connect(host=host, port=init(port), user='root', passwd='123456', db='mysql')
+        db = pymysql.connect(host=host, port=int(port), user='root', passwd='123456', db='mysql')
         break
     except Exception as e:
         print(e, "connect db failed")
